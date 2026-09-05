@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup | NIRVAAN</title>
+  <link rel="stylesheet" href="./CSS/style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-page-card auth-page-card--wide">
+      <a href="./index.html" class="auth-page-brand" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-heart-pulse">
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          <path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27" />
+        </svg>
+        <span style="font-weight: 800; font-size: 20px;">NIRVAAN</span>
+      </a>
+
+      <div class="auth-page-header">
+        <h1>Create Account</h1>
+        <p>Register for your NIRVAAN account</p>
+      </div>
+
+      <form id="signup-form" class="auth-page-form">
+        <div class="form-field">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="form-field">
+          <label for="signup-email">Email / Mobile Number</label>
+          <input type="text" id="signup-email" placeholder="Enter email or mobile number" required />
+        </div>
+
+        <div class="form-field">
+          <label for="signup-dob">Date of Birth</label>
+          <input type="text" id="signup-dob" placeholder="DD/MM/YYYY" required />
+        </div>
+
+        <div class="form-field">
+          <label for="signup-role">Choose Account Type</label>
+          <select id="signup-role" required>
+            <option value="">Select your role</option>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="hospital">Hospital</option>
+            <option value="ambulance">Ambulance Service</option>
+            <option value="blood-bank">Blood Bank</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="Create password" required />
+        </div>
+
+        <div class="form-field">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" placeholder="Confirm password" required />
+        </div>
+
+        <div id="signup-status" style="font-size: 13px; text-align: center; font-weight: 600; min-height: 18px; margin-top: 4px;"></div>
+        <button type="submit" class="auth-btn-solid" style="margin-top: 10px;">Create Account</button>
+      </form>
+
+      <div class="auth-page-switch">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const name = document.getElementById('signup-name').value.trim();
+      const emailOrPhone = document.getElementById('signup-email').value.trim();
+      const dob = document.getElementById('signup-dob').value.trim();
+      const role = document.getElementById('signup-role').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+
+      const statusEl = document.getElementById('signup-status');
+      statusEl.textContent = '';
+      statusEl.style.color = 'red';
+
+      if (password !== confirmPassword) {
+        statusEl.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      if (name.length < 2) {
+        statusEl.textContent = 'Name must be at least 2 characters.';
+        return;
+      }
+
+      let email = '';
+      let mobile = '';
+      if (emailOrPhone.includes('@')) {
+        email = emailOrPhone;
+      } else {
+        mobile = emailOrPhone.replace(/\D/g, '');
+        if (mobile.length !== 10) {
+          statusEl.textContent = 'Enter a valid email or 10-digit mobile number.';
+          return;
+        }
+        email = mobile + '@NIRVAAN.org';
+      }
+
+      const payload = {
+        account: { name, email, password, mobile },
+        role,
+        profile: { name, email, mobile, dob }
+      };
+
+      try {
+        statusEl.style.color = '#008b9b';
+        statusEl.textContent = 'Creating account...';
+
+        const response = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Registration failed.');
+        }
+
+        statusEl.style.color = 'green';
+        statusEl.textContent = 'Account created successfully!';
+
+        // Log the user in
+        sessionStorage.setItem('user', JSON.stringify({
+          name: name,
+          email: email,
+          role: role,
+          mobile: mobile
+        }));
+
+        setTimeout(() => {
+          window.location.href = './index.html';
+        }, 1000);
+
+      } catch (err) {
+        statusEl.style.color = 'red';
+        statusEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

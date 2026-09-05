@@ -1,0 +1,17 @@
+{
+  "name": "nirvaan-backend",
+  "version": "1.0.0",
+  "description": "Simple REST API backend for HealthCare app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed:doctors": "node scripts/seed-doctors.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "mongoose": "^9.9.3",
+    "multer": "^2.2.0"
+  }
+}

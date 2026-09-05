@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doctors | NIRVAAN</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./CSS/style.css" />
+  <style>
+    .doctors-page {
+      min-height: calc(100vh - 80px);
+      padding: 56px 24px;
+      background: linear-gradient(135deg, #e6f6f7 0%, #f8fafc 55%, #ffffff 100%);
+    }
+
+    .doctors-shell {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    .doctors-header {
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+
+    .doctors-kicker {
+      color: #008b9b;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .doctors-header h1 {
+      margin: 10px 0 12px;
+      color: #0f172a;
+      font-size: 48px;
+      line-height: 1.1;
+    }
+
+    .doctors-header p {
+      color: #475569;
+      font-size: 16px;
+    }
+
+    /* Filters Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f1f5f9;
+      color: #475569;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .filter-btn.active {
+      background: #008b9b;
+      color: #ffffff;
+    }
+
+    /* Doctors Grid */
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .doctor-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .doctor-img-wrapper {
+      height: 220px;
+      background: #f8fafc;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .doctor-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .doctor-photo-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: linear-gradient(135deg, #008b9b, #155e75);
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .doctor-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #e6f6f7;
+      color: #008b9b;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .doctor-card-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doctor-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .doctor-qualifications {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .doctor-meta {
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    .doctor-details-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .doctor-fee {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 15px;
+    }
+
+    .btn-book-doctor {
+      background: #008b9b;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-book-doctor:hover {
+      background: #007785;
+    }
+
+    /* Modal Styling */
+    .modal-doctor-details {
+      max-width: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="navbar-header">
+      <div class="navbar-container">
+        <a href="./index.html" class="navbar-logo" id="logoLink">
+          <div class="logo-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-pulse"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27"/></svg>
+          </div>
+          <div class="logo-text">
+            <span class="brand-name">NIRVAAN</span>
+            <span class="brand-tagline">Care. Anytime. Anywhere.</span>
+          </div>
+        </a>
+
+        <nav class="desktop-nav" id="desktopNav">
+          <a href="./index.html" class="nav-link">Home</a>
+          <a href="./find-care.html" class="nav-link">Find Care</a>
+          <a href="./doctors.html" class="nav-link">Doctors</a>
+          <a href="./emergency.html" class="nav-link">Emergency</a>
+          <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
+          <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
+        </nav>
+
+        <div class="navbar-actions">
+          <div class="auth-buttons"></div>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-nav-menu" id="mobileNavMenu" style="display: none;">
+        <nav class="mobile-nav-links">
+          <a href="./index.html" class="mobile-nav-link">Home</a>
+          <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
+          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
+          <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
+          <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
+          <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
+        </nav>
+        <div class="mobile-auth-buttons"></div>
+      </div>
+    </header>
+
+    <main class="doctors-page">
+      <div class="doctors-shell">
+        <header class="doctors-header">
+          <div class="doctors-kicker">Find Specialists</div>
+          <h1>Consult Top Medical Doctors</h1>
+          <p>Book digital appointments with verified doctors across diverse clinical specialties.</p>
+        </header>
+
+        <!-- Filters -->
+        <div class="filter-bar" id="specialtyFilterBar">
+          <button class="filter-btn active" data-specialty="All">All Specialties</button>
+          <button class="filter-btn" data-specialty="Cardiology">Cardiology</button>
+          <button class="filter-btn" data-specialty="Pediatrics">Pediatrics</button>
+          <button class="filter-btn" data-specialty="Neurology">Neurology</button>
+          <button class="filter-btn" data-specialty="Orthopedics">Orthopedics</button>
+          <button class="filter-btn" data-specialty="General Medicine">General Medicine</button>
+          <button class="filter-btn" data-specialty="Dentistry">Dentistry</button>
+          <button class="filter-btn" data-specialty="Gynecology">Gynecology</button>
+          <button class="filter-btn" data-specialty="Infertility">Infertility &amp; IVF</button>
+          <button class="filter-btn" data-specialty="Dermatology">Dermatology</button>
+        </div>
+
+        <!-- Grid -->
+        <div class="doctors-grid" id="doctorsGrid"></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <p>&copy; <span id="currentYear"></span> NIRVAAN Inc. Care. Anytime. Anywhere.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Dynamic Appointment Booking Modal -->
+  <div class="modal-overlay" id="doctorBookingModal">
+    <div class="modal-content modal-doctor-details">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div style="padding: 30px;">
+        <h3 id="modalDoctorTitle" style="font-size: 22px; color: #0f172a; margin-bottom: 8px;">Book Appointment</h3>
+        <p id="modalDoctorSubtitle" style="font-size: 14px; color: #64748b; margin-bottom: 24px;">Please complete the form to confirm your reservation slot.</p>
+        
+        <form class="booking-form" id="doctorBookingForm">
+          <div class="form-field">
+            <label for="docBookingName">Full Name</label>
+            <input type="text" id="docBookingName" required placeholder="John Doe" />
+          </div>
+
+          <div class="form-field">
+            <label for="docBookingPhone">Phone Number</label>
+            <input type="tel" id="docBookingPhone" required placeholder="10-digit mobile number" />
+          </div>
+
+          <div class="form-field">
+            <label for="docBookingDate">Appointment Date</label>
+            <input type="date" id="docBookingDate" required />
+          </div>
+
+          <div class="form-field">
+            <label for="docBookingTime">Preferred Slot</label>
+            <select id="docBookingTime" required>
+              <option value="">Choose slot</option>
+              <option value="09:00 AM - 11:00 AM">Morning (09:00 AM - 11:00 AM)</option>
+              <option value="11:00 AM - 01:00 PM">Midday (11:00 AM - 01:00 PM)</option>
+              <option value="03:00 PM - 05:00 PM">Afternoon (03:00 PM - 05:00 PM)</option>
+              <option value="05:00 PM - 07:00 PM">Evening (05:00 PM - 07:00 PM)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-book-now w-full" style="background:#008b9b; color:#ffffff; padding:12px; border-radius:8px; font-weight:700; margin-top:16px; cursor:pointer;">Confirm Booking</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="./auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Footer Year
+      const currentYearSpan = document.getElementById('currentYear');
+      if (currentYearSpan) {
+        currentYearSpan.textContent = new Date().getFullYear();
+      }
+
+      let doctorsData = [];
+      let selectedDoctor = null;
+      let activeSpecialty = 'All';
+      const API = 'http://localhost:3000/api';
+
+      const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[character]));
+      const initials = (name) => String(name || 'Doctor').replace(/^Dr\.\s*/i, '').split(/\s+/).slice(0, 2)
+        .map((part) => part[0]).join('').toUpperCase();
+      const displayFee = (fee) => {
+        const value = String(fee || 'Not listed');
+        return value === 'Not listed' || value.startsWith('₹') ? value : `₹${value}`;
+      };
+      const displayExperience = (experience) => {
+        const value = String(experience || 'Experience not listed');
+        return /year/i.test(value) ? value : `${value} years`;
+      };
+
+      // Modal helpers
+      const modal = document.getElementById('doctorBookingModal');
+      const openModal = () => modal.classList.add('active');
+      const closeModal = () => {
+        modal.classList.remove('active');
+        document.getElementById('doctorBookingForm').reset();
+      };
+      
+      modal.querySelector('.modal-close').addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+      // Fetch Doctors
+      async function loadDoctors() {
+        try {
+          const response = await fetch(`${API}/doctors`);
+          if (!response.ok) throw new Error('Network issue');
+          doctorsData = await response.json();
+          renderDoctors(activeSpecialty);
+        } catch (err) {
+          console.error('Failed to fetch doctors, rendering backup list.', err);
+          doctorsData = [
+            {
+              "id": "doc-1",
+              "name": "Dr. Sarah Alston",
+              "specialty": "Cardiology",
+              "qualification": "MD, DM (Cardiology), FACC",
+              "experience": 14,
+              "fee": 1200,
+              "availableDays": "Mon, Wed, Fri",
+              "availableTime": "10:00 AM - 02:00 PM",
+              "photo": "./images/avatars/avatar1.jpg",
+              "clinicName": "City Care Hospital",
+              "languages": "English, Hindi"
+            },
+            {
+              "id": "doc-2",
+              "name": "Dr. Rajesh Varma",
+              "specialty": "Pediatrics",
+              "qualification": "MD (Pediatrics), DCH",
+              "experience": 10,
+              "fee": 800,
+              "availableDays": "Tue, Thu, Sat",
+              "availableTime": "09:00 AM - 01:00 PM",
+              "photo": "./images/avatars/avatar2.jpg",
+              "clinicName": "Sunrise Hospital",
+              "languages": "English, Hindi, Bengali"
+            }
+          ];
+          renderDoctors(activeSpecialty);
+        }
+      }
+
+      function renderDoctors(specialtyFilter) {
+        const grid = document.getElementById('doctorsGrid');
+        const filtered = specialtyFilter === 'All' 
+          ? doctorsData 
+          : doctorsData.filter(d => String(d.specialty || '').toLowerCase().includes(specialtyFilter.toLowerCase()));
+
+        if (!filtered.length) {
+          grid.innerHTML = '<p style="color:#475569; grid-column:1/-1; text-align:center;">No doctors found for this specialty.</p>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map(d => `
+          <div class="doctor-card">
+            <div class="doctor-img-wrapper">
+              ${d.photo
+                ? `<img src="${escapeHtml(d.photo)}" alt="${escapeHtml(d.name)}" class="doctor-img" />`
+                : `<div class="doctor-photo-fallback" aria-label="${escapeHtml(d.name)} initials">${escapeHtml(initials(d.name))}</div>`}
+              <span class="doctor-badge">${escapeHtml(d.specialty || 'General Medicine')}</span>
+            </div>
+            <div class="doctor-card-content">
+              <h3 class="doctor-name">${escapeHtml(d.name)}</h3>
+              <p class="doctor-qualifications">${escapeHtml(d.qualification || 'Qualifications not listed')}</p>
+              <div class="doctor-meta">
+                <p>💼 <strong>Exp:</strong> ${escapeHtml(displayExperience(d.experience))}</p>
+                <p>📍 <strong>At:</strong> ${escapeHtml(d.clinicName || d.location || 'Location not listed')}</p>
+                <p>🕒 <strong>Schedule:</strong> ${escapeHtml(d.availableDays || 'Please call to confirm')} (${escapeHtml(d.availableTime || 'Please call to confirm')})</p>
+              </div>
+              <div class="doctor-details-row">
+                <span class="doctor-fee">${escapeHtml(displayFee(d.fee))}</span>
+                <button class="btn-book-doctor" data-id="${escapeHtml(d.id)}">Book Now</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Attach event listeners to book buttons
+        document.querySelectorAll('.btn-book-doctor').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const docId = btn.dataset.id;
+            selectedDoctor = doctorsData.find(d => d.id === docId);
+            
+            document.getElementById('modalDoctorTitle').textContent = `Book ${selectedDoctor.name}`;
+            document.getElementById('modalDoctorSubtitle').textContent = `${selectedDoctor.specialty} Specialist • Consultation Fee: ${displayFee(selectedDoctor.fee)}`;
+            
+            // Auto-fill form if logged in
+            const loggedUser = window.getLoggedInUser ? window.getLoggedInUser() : null;
+            if (loggedUser) {
+              document.getElementById('docBookingName').value = loggedUser.name;
+              document.getElementById('docBookingPhone').value = loggedUser.mobile || '';
+            }
+
+            openModal();
+          });
+        });
+      }
+
+      // Filter handling
+      const filterBar = document.getElementById('specialtyFilterBar');
+      const setSpecialty = (specialty) => {
+        activeSpecialty = specialty;
+        filterBar.querySelectorAll('.filter-btn').forEach((button) => {
+          button.classList.toggle('active', button.dataset.specialty === specialty);
+        });
+        renderDoctors(specialty);
+      };
+
+      filterBar.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        setSpecialty(btn.dataset.specialty);
+      });
+
+      const requestedCare = new URLSearchParams(window.location.search).get('care') || '';
+      const requestedButton = [...filterBar.querySelectorAll('.filter-btn')].find((button) => {
+        const specialty = button.dataset.specialty.toLowerCase();
+        return specialty !== 'all' && requestedCare.toLowerCase().includes(specialty);
+      });
+      if (requestedButton) {
+        activeSpecialty = requestedButton.dataset.specialty;
+        filterBar.querySelectorAll('.filter-btn').forEach((button) => {
+          button.classList.toggle('active', button === requestedButton);
+        });
+      }
+
+      // Submit booking
+      const bookingForm = document.getElementById('doctorBookingForm');
+      bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!selectedDoctor) return;
+
+        const loggedUser = window.getLoggedInUser ? window.getLoggedInUser() : null;
+        const payload = {
+          doctorId: selectedDoctor.id,
+          doctorName: selectedDoctor.name,
+          name: document.getElementById('docBookingName').value.trim(),
+          phone: document.getElementById('docBookingPhone').value.trim(),
+          userEmail: loggedUser ? loggedUser.email : '',
+          date: document.getElementById('docBookingDate').value,
+          timeSlot: document.getElementById('docBookingTime').value
+        };
+
+        const submitBtn = bookingForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Booking...';
+
+        try {
+          const res = await fetch(`${API}/appointments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            alert(`Appointment booked successfully with ${selectedDoctor.name}!`);
+            closeModal();
+          } else {
+            const data = await res.json();
+            alert('Failed to book: ' + (data.message || 'Please try again.'));
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Appointment booked successfully! (Offline mode)');
+          closeModal();
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Booking';
+        }
+      });
+
+      // Load initial data
+      loadDoctors();
+
+      // Mobile navbar toggle
+      const menuButton = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileNavMenu');
+      menuButton?.addEventListener('click', () => {
+        const isOpen = mobileMenu.style.display === 'flex';
+        mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Dependencies
+backend/node_modules/
+
+# Environment / secrets
+backend/.env
+atlas-credentials.env
+.env
+*.env
+
+# Logs
+*.log
+
+# Uploaded/generated files
+backend/uploads/
+
+# VS Code
+.vscode/

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "test-1",
+    "name": "Complete Blood Count (CBC)",
+    "price": 350,
+    "description": "Measures red blood cells, white blood cells, hemoglobin, and platelets to evaluate overall health.",
+    "timeToResult": "24 Hours"
+  },
+  {
+    "id": "test-2",
+    "name": "Lipid Profile (Cholesterol)",
+    "price": 500,
+    "description": "Measures cholesterol and triglyceride levels to assess risk of cardiovascular disease.",
+    "timeToResult": "12 Hours"
+  },
+  {
+    "id": "test-3",
+    "name": "Thyroid Profile (T3, T4, TSH)",
+    "price": 600,
+    "description": "Evaluates thyroid gland function and checks for hyperthyroidism or hypothyroidism.",
+    "timeToResult": "24 Hours"
+  },
+  {
+    "id": "test-4",
+    "name": "HbA1c (Diabetes Tracker)",
+    "price": 450,
+    "description": "Measures average blood sugar levels over the past 3 months. Essential for diabetes management.",
+    "timeToResult": "12 Hours"
+  },
+  {
+    "id": "test-5",
+    "name": "Executive Full Body Checkup",
+    "price": 2999,
+    "description": "Comprehensive health screen comprising 60+ parameters including kidney, liver, thyroid, lipids, and CBC.",
+    "timeToResult": "48 Hours"
+  },
+  {
+    "id": "test-6",
+    "name": "Vitamin D & B12 Combo",
+    "price": 1200,
+    "description": "Checks for key vitamin deficiencies which can cause fatigue, joint pain, and nerve damage.",
+    "timeToResult": "24 Hours"
+  }
+]

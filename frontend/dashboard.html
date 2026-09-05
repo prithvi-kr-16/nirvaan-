@@ -1,0 +1,2012 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | NIRVAAN</title>
+  <link rel="stylesheet" href="./CSS/style.css" />
+  <style>
+    .dashboard-page {
+      min-height: calc(100vh - 80px);
+      padding: 40px 24px;
+      background: linear-gradient(135deg, #e6f6f7 0%, #f8fafc 60%, #ffffff 100%);
+    }
+
+    .dashboard-container {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      margin-top: 24px;
+    }
+
+    /* Sidebar Profile Card */
+    .profile-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 30px 24px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      align-self: start;
+    }
+
+    .profile-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #008b9b;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 0 auto 16px;
+      border: 4px solid #e6f6f7;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .profile-email {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 16px;
+      word-break: break-all;
+    }
+
+    .profile-role-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: #e6f6f7;
+      color: #008b9b;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .dashboard-nav-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 28px;
+      text-align: left;
+    }
+
+    .nav-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab-btn:hover,
+    .nav-tab-btn.active {
+      background: #e6f6f7;
+      color: #008b9b;
+    }
+
+    /* Main Dashboard Panels */
+    .dashboard-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      min-height: 500px;
+    }
+
+    .panel-header {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h2 {
+      font-size: 24px;
+      color: #0f172a;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .history-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .history-details h4 {
+      font-size: 16px;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .history-details p {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .history-details .info-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .history-details .info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .badge-info {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: #64748b;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 850px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Health Profile Styles */
+    .health-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    
+    .edit-profile-btn {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    
+    .edit-profile-btn:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* Dropdown Sidebar Styling */
+    .sidebar-dropdown {
+      width: 100%;
+    }
+    
+    .dropdown-menu-list {
+      border-left: 2px solid #e2e8f0;
+      margin-left: 8px;
+    }
+    
+    .sub-tab-btn {
+      color: #64748b !important;
+      background: transparent !important;
+      font-weight: 500 !important;
+      gap: 8px !important;
+    }
+    
+    .sub-tab-btn:hover,
+    .sub-tab-btn.active {
+      color: var(--primary) !important;
+      background-color: var(--primary-light) !important;
+      font-weight: 700 !important;
+    }
+
+    /* Modal dialog styling */
+    .custom-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+    }
+    
+    .modal-panel {
+      position: relative;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      z-index: 10;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: modal-enter 0.2s ease-out;
+    }
+    
+    @keyframes modal-enter {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .modal-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+    }
+    
+    .modal-header h3 {
+      font-size: 18px;
+      color: #0f172a;
+    }
+    
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: #64748b;
+      cursor: pointer;
+      line-height: 1;
+    }
+    
+    .modal-form {
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+    
+    .modal-form .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    
+    .modal-form label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+    }
+    
+    .modal-form input,
+    .modal-form select,
+    .modal-form textarea {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      background-color: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    .modal-form input:focus,
+    .modal-form select:focus,
+    .modal-form textarea:focus {
+      border-color: var(--primary);
+    }
+    
+    /* Family Card styling */
+    .family-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    
+    .family-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+    
+    .family-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    
+    .family-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .family-card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    
+    .family-card-relation {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .family-details-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .family-details-item {
+      font-size: 13px;
+      color: #475569;
+    }
+
+    /* Modal tabs styling */
+    .modal-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      outline: none;
+    }
+    
+    .modal-tab-btn:hover,
+    .modal-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    /* Reports list styling */
+    .report-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f8fafc;
+      margin-bottom: 10px;
+    }
+    
+    .report-details h5 {
+      font-size: 14px;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    
+    .report-details p {
+      font-size: 11px;
+      color: #64748b;
+    }
+    
+    .report-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .report-action-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .report-action-link.delete-link {
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+    <header class="navbar-header">
+      <div class="navbar-container">
+        <a href="./index.html" class="navbar-logo" id="logoLink">
+          <div class="logo-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-pulse"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27"/></svg>
+          </div>
+          <div class="logo-text">
+            <span class="brand-name">NIRVAAN</span>
+            <span class="brand-tagline">Care. Anytime. Anywhere.</span>
+          </div>
+        </a>
+
+        <nav class="desktop-nav" id="desktopNav">
+          <a href="./index.html" class="nav-link">Home</a>
+          <a href="./find-care.html" class="nav-link">Find Care</a>
+          <a href="./doctors.html" class="nav-link">Doctors</a>
+          <a href="./emergency.html" class="nav-link">Emergency</a>
+          <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
+          <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
+        </nav>
+
+        <div class="navbar-actions">
+          <div class="auth-buttons"></div>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-nav-menu" id="mobileNavMenu" style="display: none;">
+        <nav class="mobile-nav-links">
+          <a href="./index.html" class="mobile-nav-link">Home</a>
+          <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
+          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
+          <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
+          <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
+          <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
+        </nav>
+        <div class="mobile-auth-buttons"></div>
+      </div>
+    </header>
+
+    <main class="dashboard-page">
+      <div class="dashboard-container">
+        <div class="dashboard-grid">
+          <!-- Sidebar -->
+          <div class="profile-card">
+            <div class="profile-avatar" id="userInitial">U</div>
+            <h3 class="profile-name" id="profileName">User Name</h3>
+            <p class="profile-email" id="profileEmail">user@example.com</p>
+            <span class="profile-role-badge" id="profileRole">Patient</span>
+
+            <nav class="dashboard-nav-tabs">
+              <button class="nav-tab-btn active" data-panel="appointments-panel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>Appointments</span>
+              </button>
+              <button class="nav-tab-btn" data-panel="orders-panel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Pharmacy Orders</span>
+              </button>
+              <button class="nav-tab-btn" data-panel="tests-panel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8L4.36 20.5a1.28 1.28 0 0 0 1.12 1.86h13.04a1.28 1.28 0 0 0 1.12-1.86L14 10V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>
+                <span>Diagnostic Bookings</span>
+              </button>
+              <button class="nav-tab-btn" data-panel="emergency-panel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M12 7V3"/><path d="M11 3h2"/></svg>
+                <span>Emergency Dispatches</span>
+              </button>
+              
+              <!-- Health Profile Dropdown -->
+              <div class="sidebar-dropdown">
+                <button class="nav-tab-btn dropdown-toggle-btn" id="healthProfileToggle" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                  <span>Health Profile</span>
+                  <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto; transition: transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dropdown-menu-list" id="healthProfileDropdown" style="display: none; padding-left: 14px; flex-direction: column; gap: 4px; margin-top: 4px;">
+                  <button class="nav-tab-btn sub-tab-btn" data-panel="history-panel" type="button" style="padding: 10px 12px; font-size: 13px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <span>My Medical History</span>
+                  </button>
+                  <button class="nav-tab-btn sub-tab-btn" data-panel="family-panel" type="button" style="padding: 10px 12px; font-size: 13px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Family Members</span>
+                  </button>
+                </div>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Main Content Panel -->
+          <div class="dashboard-panel">
+            <!-- Appointments Panel -->
+            <div id="appointments-panel" class="panel-view">
+              <div class="panel-header">
+                <h2>Your Appointments</h2>
+              </div>
+              <div class="history-list" id="appointmentsList"></div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div id="orders-panel" class="panel-view" style="display: none;">
+              <div class="panel-header">
+                <h2>Medicine Orders</h2>
+              </div>
+              <div class="history-list" id="ordersList"></div>
+            </div>
+
+            <!-- Tests Panel -->
+            <div id="tests-panel" class="panel-view" style="display: none;">
+              <div class="panel-header">
+                <h2>Lab Diagnostic Bookings</h2>
+              </div>
+              <div class="history-list" id="testsList"></div>
+            </div>
+
+            <!-- Emergency Panel -->
+            <div id="emergency-panel" class="panel-view" style="display: none;">
+              <div class="panel-header">
+                <h2>Ambulance Dispatch Status</h2>
+              </div>
+              <div class="history-list" id="dispatchesList"></div>
+            </div>
+
+            <!-- Medical History Panel -->
+            <div id="history-panel" class="panel-view" style="display: none;">
+              <div class="panel-header">
+                <h2>My Medical History</h2>
+              </div>
+              
+              <!-- Personal Health Info Card -->
+              <div class="health-card" style="margin-bottom: 24px;">
+                <div class="health-card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+                  <h3 style="font-size: 18px; color: #0f172a;">Personal Health Information</h3>
+                  <button class="edit-profile-btn" id="editPersonalHealthBtn" type="button" style="color: #008b9b; font-size: 13px; font-weight: 700; cursor: pointer;">Edit Info</button>
+                </div>
+                <div class="health-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Full Name</span><strong id="phFullName">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Date of Birth</span><strong id="phDob">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Gender</span><strong id="phGender">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Blood Type</span><strong id="phBloodType">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Height</span><strong id="phHeight">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Weight</span><strong id="phWeight">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Phone Number</span><strong id="phPhone">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Email</span><strong id="phEmail">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Emergency Contact</span><strong id="phEmergencyContact">-</strong></div>
+                  <div style="grid-column: 1 / -1;"><span style="font-size: 12px; color: #64748b; display: block;">Address</span><strong id="phAddress">-</strong></div>
+                </div>
+              </div>
+
+              <!-- Medical Summary Card -->
+              <div class="health-card" style="margin-bottom: 24px;">
+                <div class="health-card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+                  <h3 style="font-size: 18px; color: #0f172a;">Medical Summary</h3>
+                  <button class="edit-profile-btn" id="editMedicalSummaryBtn" type="button" style="color: #008b9b; font-size: 13px; font-weight: 700; cursor: pointer;">Edit Summary</button>
+                </div>
+                <div class="health-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Allergies</span><strong id="msAllergies">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Chronic Diseases / Conditions</span><strong id="msConditions">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Current Medications</span><strong id="msMedications">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Previous Surgeries</span><strong id="msSurgeries">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Previous Major Illnesses</span><strong id="msIllnesses">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Vaccination Status</span><strong id="msVaccination">-</strong></div>
+                  <div><span style="font-size: 12px; color: #64748b; display: block;">Family Medical Risk</span><strong id="msFamilyRisk">-</strong></div>
+                  <div style="grid-column: 1 / -1;"><span style="font-size: 12px; color: #64748b; display: block;">Other Important Medical Information</span><strong id="msNotes">-</strong></div>
+                </div>
+              </div>
+
+              <!-- Medical History Records Timeline -->
+              <div class="health-card">
+                <div class="health-card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+                  <h3 style="font-size: 18px; color: #0f172a;">Medical History Records</h3>
+                  <button class="btn-solid" id="addMedicalHistoryBtn" type="button" style="padding: 8px 16px; font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; background-color: var(--primary); color: #ffffff;">
+                    <span>+ Add Medical History</span>
+                  </button>
+                </div>
+                <div class="history-list" id="personalHistoryList"></div>
+              </div>
+            </div>
+
+            <!-- Family Members Panel -->
+            <div id="family-panel" class="panel-view" style="display: none;">
+              <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Family Members</h2>
+                <button class="btn-solid" id="addFamilyMemberBtn" type="button" style="padding: 8px 16px; font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; background-color: var(--primary); color: #ffffff;">
+                  <span>+ Add Family Member</span>
+                </button>
+              </div>
+              <div class="family-grid" id="familyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Personal Health Modal -->
+  <div class="custom-modal" id="personalHealthModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('personalHealthModal')"></div>
+    <div class="modal-panel" style="width: min(600px, 95%);">
+      <div class="modal-header">
+        <h3>Edit Personal Health Info</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('personalHealthModal')">&times;</button>
+      </div>
+      <form id="personalHealthForm" class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-field">
+            <label>Full Name</label>
+            <input type="text" id="phEditFullName" required />
+          </div>
+          <div class="form-field">
+            <label>Date of Birth</label>
+            <input type="date" id="phEditDob" required />
+          </div>
+          <div class="form-field">
+            <label>Gender</label>
+            <select id="phEditGender" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Blood Type</label>
+            <select id="phEditBloodType" required>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Height (cm)</label>
+            <input type="number" id="phEditHeight" required />
+          </div>
+          <div class="form-field">
+            <label>Weight (kg)</label>
+            <input type="number" id="phEditWeight" required />
+          </div>
+          <div class="form-field">
+            <label>Phone Number</label>
+            <input type="tel" id="phEditPhone" required />
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" id="phEditEmail" required />
+          </div>
+          <div class="form-field" style="grid-column: 1 / -1;">
+            <label>Emergency Contact</label>
+            <input type="text" id="phEditEmergencyContact" placeholder="Name - Relationship - Phone" required />
+          </div>
+          <div class="form-field" style="grid-column: 1 / -1;">
+            <label>Address</label>
+            <textarea id="phEditAddress" required style="min-height: 60px;"></textarea>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-outline" onclick="closeCustomModal('personalHealthModal')" style="padding: 10px 20px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-solid" style="padding: 10px 20px; font-size: 14px; background-color: var(--primary); color: #ffffff; border-radius: 8px; cursor: pointer;">Save Info</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Medical Summary Modal -->
+  <div class="custom-modal" id="medicalSummaryModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('medicalSummaryModal')"></div>
+    <div class="modal-panel" style="width: min(600px, 95%);">
+      <div class="modal-header">
+        <h3>Edit Medical Summary</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('medicalSummaryModal')">&times;</button>
+      </div>
+      <form id="medicalSummaryForm" class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <div class="form-field">
+          <label>Allergies</label>
+          <input type="text" id="msEditAllergies" placeholder="e.g. Peanuts, Penicillin" />
+        </div>
+        <div class="form-field">
+          <label>Chronic Diseases / Conditions</label>
+          <input type="text" id="msEditConditions" placeholder="e.g. Asthma, Hypertension" />
+        </div>
+        <div class="form-field">
+          <label>Current Medications</label>
+          <input type="text" id="msEditMedications" placeholder="e.g. Albuterol, Lisinopril" />
+        </div>
+        <div class="form-field">
+          <label>Previous Surgeries</label>
+          <input type="text" id="msEditSurgeries" placeholder="e.g. Appendectomy (2020)" />
+        </div>
+        <div class="form-field">
+          <label>Previous Major Illnesses</label>
+          <input type="text" id="msEditIllnesses" placeholder="e.g. Covid-19 severe (2021)" />
+        </div>
+        <div class="form-field">
+          <label>Vaccination Status</label>
+          <input type="text" id="msEditVaccination" placeholder="e.g. Fully vaccinated (Covid, Flu)" />
+        </div>
+        <div class="form-field">
+          <label>Family Medical Risk</label>
+          <input type="text" id="msEditFamilyRisk" placeholder="e.g. Diabetes (Father's side)" />
+        </div>
+        <div class="form-field">
+          <label>Other Important Medical Information</label>
+          <textarea id="msEditNotes" style="min-height: 60px;"></textarea>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-outline" onclick="closeCustomModal('medicalSummaryModal')" style="padding: 10px 20px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-solid" style="padding: 10px 20px; font-size: 14px; background-color: var(--primary); color: #ffffff; border-radius: 8px; cursor: pointer;">Save Summary</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Medical History Modal -->
+  <div class="custom-modal" id="medicalHistoryModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('medicalHistoryModal')"></div>
+    <div class="modal-panel" style="width: min(500px, 95%);">
+      <div class="modal-header">
+        <h3 id="historyModalHeading">Add Medical History</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('medicalHistoryModal')">&times;</button>
+      </div>
+      <form id="medicalHistoryForm" class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="historyFormFamilyId" />
+        <div class="form-field">
+          <label>Disease / Condition</label>
+          <input type="text" id="histDisease" required />
+        </div>
+        <div class="form-field">
+          <label>Diagnosis Date</label>
+          <input type="date" id="histDate" required />
+        </div>
+        <div class="form-field">
+          <label>Treatment</label>
+          <input type="text" id="histTreatment" required />
+        </div>
+        <div class="form-field">
+          <label>Doctor / Hospital</label>
+          <input type="text" id="histHospital" required />
+        </div>
+        <div class="form-field">
+          <label>Medication</label>
+          <input type="text" id="histMedication" required />
+        </div>
+        <div class="form-field">
+          <label>Recovery / Current Status</label>
+          <select id="histStatus" required>
+            <option value="Recovered">Recovered</option>
+            <option value="Under Treatment">Under Treatment</option>
+            <option value="Chronic / Ongoing">Chronic / Ongoing</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Additional Notes</label>
+          <textarea id="histNotes" style="min-height: 60px;"></textarea>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-outline" onclick="closeCustomModal('medicalHistoryModal')" style="padding: 10px 20px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-solid" style="padding: 10px 20px; font-size: 14px; background-color: var(--primary); color: #ffffff; border-radius: 8px; cursor: pointer;">Save Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Family Member Modal -->
+  <div class="custom-modal" id="familyMemberModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('familyMemberModal')"></div>
+    <div class="modal-panel" style="width: min(700px, 95%); max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 id="familyMemberModalTitle">Add Family Member</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('familyMemberModal')">&times;</button>
+      </div>
+      <form id="familyMemberForm" class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+        <input type="hidden" id="famEditId" />
+        
+        <div>
+          <h4 style="margin-bottom: 12px; color: #008b9b; font-size: 15px; border-bottom: 1px solid #e6f6f7; padding-bottom: 4px;">Personal Information</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-field">
+              <label>Full Name</label>
+              <input type="text" id="famFullName" required />
+            </div>
+            <div class="form-field">
+              <label>Relationship</label>
+              <select id="famRelationship" onchange="toggleCustomRelationship()" required>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Husband">Husband</option>
+                <option value="Wife">Wife</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Grandfather">Grandfather</option>
+                <option value="Grandmother">Grandmother</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-field" id="customRelationshipField" style="display: none;">
+              <label>Custom Relationship</label>
+              <input type="text" id="famCustomRelationship" placeholder="Specify relationship" />
+            </div>
+            <div class="form-field">
+              <label>Date of Birth</label>
+              <input type="date" id="famDob" required />
+            </div>
+            <div class="form-field">
+              <label>Gender</label>
+              <select id="famGender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-binary">Non-binary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Blood Type</label>
+              <select id="famBloodType" required>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="Unknown">Unknown</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Height (cm)</label>
+              <input type="number" id="famHeight" required />
+            </div>
+            <div class="form-field">
+              <label>Weight (kg)</label>
+              <input type="number" id="famWeight" required />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 12px; color: #008b9b; font-size: 15px; border-bottom: 1px solid #e6f6f7; padding-bottom: 4px;">Contact Information</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-field">
+              <label>Phone Number</label>
+              <input type="tel" id="famPhone" required />
+            </div>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" id="famEmail" required />
+            </div>
+            <div class="form-field">
+              <label>Emergency Contact</label>
+              <input type="text" id="famEmergencyContact" placeholder="Name - Relation - Phone" required />
+            </div>
+            <div class="form-field">
+              <label>Address</label>
+              <input type="text" id="famAddress" required />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 12px; color: #008b9b; font-size: 15px; border-bottom: 1px solid #e6f6f7; padding-bottom: 4px;">Medical Information</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-field">
+              <label>Known Allergies</label>
+              <input type="text" id="famAllergies" placeholder="e.g. None, Penicillin" />
+            </div>
+            <div class="form-field">
+              <label>Chronic Conditions</label>
+              <input type="text" id="famConditions" placeholder="e.g. Asthma" />
+            </div>
+            <div class="form-field">
+              <label>Current Medications</label>
+              <input type="text" id="famMedications" placeholder="e.g. Inhaler" />
+            </div>
+            <div class="form-field">
+              <label>Previous Surgeries</label>
+              <input type="text" id="famSurgeries" />
+            </div>
+            <div class="form-field">
+              <label>Previous Major Illnesses</label>
+              <input type="text" id="famIllnesses" />
+            </div>
+            <div class="form-field">
+              <label>Vaccination Information</label>
+              <input type="text" id="famVaccination" />
+            </div>
+            <div class="form-field" style="grid-column: 1 / -1;">
+              <label>Family Medical History</label>
+              <input type="text" id="famHistory" />
+            </div>
+            <div class="form-field" style="grid-column: 1 / -1;">
+              <label>Important Medical Notes</label>
+              <textarea id="famNotes" style="min-height: 60px;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-outline" onclick="closeCustomModal('familyMemberModal')" style="padding: 10px 20px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-solid" style="padding: 10px 20px; font-size: 14px; background-color: var(--primary); color: #ffffff; border-radius: 8px; cursor: pointer;">Save Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Family Member Details Modal -->
+  <div class="custom-modal" id="familyDetailsModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('familyDetailsModal')"></div>
+    <div class="modal-panel" style="width: min(800px, 95%); max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 id="fdMemberName">Family Member Profile</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('familyDetailsModal')">&times;</button>
+      </div>
+      
+      <!-- Multi-tab controls -->
+      <div class="modal-tabs" style="display: flex; gap: 16px; border-bottom: 1px solid #e2e8f0; padding: 0 24px; background: #f8fafc;">
+        <button class="modal-tab-btn active" data-tab="fd-overview" onclick="switchModalTab(this)">Overview</button>
+        <button class="modal-tab-btn" data-tab="fd-history" onclick="switchModalTab(this)">Medical History</button>
+        <button class="modal-tab-btn" data-tab="fd-reports" onclick="switchModalTab(this)">Medical Reports</button>
+      </div>
+
+      <div style="padding: 24px;">
+        <!-- Tab 1: Overview -->
+        <div id="fd-overview" class="modal-tab-view">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Full Name</span><strong id="fdFullNameVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Relationship</span><strong id="fdRelationshipVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Date of Birth</span><strong id="fdDobVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Gender</span><strong id="fdGenderVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Blood Type</span><strong id="fdBloodTypeVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Height</span><strong id="fdHeightVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Weight</span><strong id="fdWeightVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Phone Number</span><strong id="fdPhoneVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Email</span><strong id="fdEmailVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Emergency Contact</span><strong id="fdEmergencyVal">-</strong></div>
+            <div style="grid-column: 1 / -1;"><span style="font-size: 12px; color: #64748b; display: block;">Address</span><strong id="fdAddressVal">-</strong></div>
+          </div>
+          
+          <h4 style="margin: 20px 0 12px; color: #008b9b; font-size: 15px; border-bottom: 1px solid #e6f6f7; padding-bottom: 4px;">Medical Details</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Allergies</span><strong id="fdAllergiesVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Chronic Conditions</span><strong id="fdConditionsVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Current Medications</span><strong id="fdMedicationsVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Previous Surgeries</span><strong id="fdSurgeriesVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Previous Illnesses</span><strong id="fdIllnessesVal">-</strong></div>
+            <div><span style="font-size: 12px; color: #64748b; display: block;">Vaccination Info</span><strong id="fdVaccinationVal">-</strong></div>
+            <div style="grid-column: 1 / -1;"><span style="font-size: 12px; color: #64748b; display: block;">Important Medical Notes</span><strong id="fdNotesVal">-</strong></div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Medical History -->
+        <div id="fd-history" class="modal-tab-view" style="display: none;">
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+            <button class="btn-solid" onclick="openAddFamHistoryModal()" style="padding: 8px 16px; font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; background-color: var(--primary); color: #ffffff;">
+              + Add Medical History
+            </button>
+          </div>
+          <div class="history-list" id="fdHistoryList"></div>
+        </div>
+
+        <!-- Tab 3: Medical Reports -->
+        <div id="fd-reports" class="modal-tab-view" style="display: none;">
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+            <button class="btn-solid" onclick="openUploadReportModal()" style="padding: 8px 16px; font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; background-color: var(--primary); color: #ffffff;">
+              + Upload Medical Report
+            </button>
+          </div>
+          <div class="reports-list-container" id="fdReportsList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Medical Report Modal -->
+  <div class="custom-modal" id="uploadReportModal" style="display: none;">
+    <div class="modal-backdrop" onclick="closeCustomModal('uploadReportModal')"></div>
+    <div class="modal-panel" style="width: min(500px, 95%);">
+      <div class="modal-header">
+        <h3>Upload Medical Report</h3>
+        <button class="modal-close-btn" onclick="closeCustomModal('uploadReportModal')">&times;</button>
+      </div>
+      <form id="uploadReportForm" class="modal-form" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="uploadReportFamilyId" />
+        <div class="form-field">
+          <label>Report Name / Title</label>
+          <input type="text" id="reportName" required placeholder="e.g. Annual Blood Test" />
+        </div>
+        <div class="form-field">
+          <label>Report Type</label>
+          <select id="reportType" required>
+            <option value="Blood Test">Blood Test</option>
+            <option value="X-Ray">X-Ray</option>
+            <option value="MRI">MRI</option>
+            <option value="CT Scan">CT Scan</option>
+            <option value="Ultrasound">Ultrasound</option>
+            <option value="Prescription">Prescription</option>
+            <option value="Discharge Summary">Discharge Summary</option>
+            <option value="Vaccination Record">Vaccination Record</option>
+            <option value="Surgery Report">Surgery Report</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Report Date</label>
+          <input type="date" id="reportDate" required />
+        </div>
+        <div class="form-field">
+          <label>Doctor / Hospital</label>
+          <input type="text" id="reportDoctor" placeholder="e.g. Dr. Jane Smith" />
+        </div>
+        <div class="form-field">
+          <label>PDF File</label>
+          <input type="file" id="reportPdfFile" accept=".pdf" required />
+          <span style="font-size: 11px; color: #64748b; margin-top: 4px;">Only PDF medical reports are supported.</span>
+        </div>
+        <div class="form-field">
+          <label>Additional Notes</label>
+          <textarea id="reportNotes" style="min-height: 60px;"></textarea>
+        </div>
+        
+        <!-- Progress display -->
+        <div id="uploadProgressContainer" style="display: none; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
+            <span>Uploading Report...</span>
+            <span id="uploadProgressPercent">0%</span>
+          </div>
+          <div style="width: 100%; height: 6px; background-color: #e2e8f0; border-radius: 3px; overflow: hidden;">
+            <div id="uploadProgressBar" style="width: 0%; height: 100%; background-color: var(--primary); transition: width 0.1s ease;"></div>
+          </div>
+        </div>
+
+        <div id="uploadStatusMessage" style="font-size: 12px; font-weight: 700; text-align: center; min-height: 18px;"></div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px;">
+          <button type="button" class="btn-outline" onclick="closeCustomModal('uploadReportModal')" style="padding: 10px 20px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;">Cancel</button>
+          <button type="submit" id="submitUploadReportBtn" class="btn-solid" style="padding: 10px 20px; font-size: 14px; background-color: var(--primary); color: #ffffff; border-radius: 8px; cursor: pointer;">Upload Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Guard check
+      const loggedUser = window.getLoggedInUser ? window.getLoggedInUser() : null;
+      if (!loggedUser) {
+        alert('Access denied. Please log in first.');
+        window.location.href = './index.html';
+        return;
+      }
+
+      // 2. Set profile info
+      document.getElementById('profileName').textContent = loggedUser.name;
+      document.getElementById('profileEmail').textContent = loggedUser.email;
+      document.getElementById('profileRole').textContent = loggedUser.role;
+      document.getElementById('userInitial').textContent = loggedUser.name[0].toUpperCase();
+
+      // 3. Tab switching
+      const tabs = document.querySelectorAll('.nav-tab-btn');
+      const healthProfileDropdown = document.getElementById('healthProfileDropdown');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          if (tab.classList.contains('dropdown-toggle-btn')) {
+            // Accordion toggle
+            const isHidden = healthProfileDropdown.style.display === 'none';
+            healthProfileDropdown.style.display = isHidden ? 'flex' : 'none';
+            const chevron = tab.querySelector('.chevron-icon');
+            if (chevron) {
+              chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+            return;
+          }
+
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const targetPanel = tab.dataset.panel;
+          if (targetPanel) {
+            document.querySelectorAll('.panel-view').forEach(panel => {
+              panel.style.display = panel.id === targetPanel ? 'block' : 'none';
+            });
+          }
+        });
+      });
+
+      // 4. Fetch history from backend
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/history?email=${encodeURIComponent(loggedUser.email)}`);
+        if (!response.ok) throw new Error('Failed to load user history.');
+        const history = await response.json();
+
+        // Render Appointments
+        const appointmentsList = document.getElementById('appointmentsList');
+        if (history.appointments.length === 0) {
+          appointmentsList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📅</div>
+              <p>No appointments booked yet.</p>
+            </div>
+          `;
+        } else {
+          appointmentsList.innerHTML = history.appointments.map(a => `
+            <div class="history-card">
+              <div class="history-details">
+                <h4>${a.type === 'doctor' ? a.doctorName : a.hospitalName}</h4>
+                <p><strong>Patient:</strong> ${a.name} (${a.phone})</p>
+                <div class="info-row">
+                  <div class="info-item">📅 ${a.date}</div>
+                  <div class="info-item">⏰ ${a.timeSlot || a.department || 'General Checkup'}</div>
+                </div>
+              </div>
+              <div>
+                <span class="status-pill badge-success">Confirmed</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Render Pharmacy Orders
+        const ordersList = document.getElementById('ordersList');
+        if (history.orders.length === 0) {
+          ordersList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📦</div>
+              <p>No pharmacy orders found.</p>
+            </div>
+          `;
+        } else {
+          ordersList.innerHTML = history.orders.map(o => `
+            <div class="history-card">
+              <div class="history-details">
+                <h4>Order Reference: ${o.id.toUpperCase()}</h4>
+                <p><strong>Items:</strong> ${o.items.map(item => `${item.name} (${item.quantity}x)`).join(', ')}</p>
+                <p><strong>Shipping to:</strong> ${o.address}</p>
+                <div class="info-row">
+                  <div class="info-item">📅 Ordered: ${new Date(o.createdAt).toLocaleDateString()}</div>
+                  <div class="info-item">💳 Total: ₹${o.total}</div>
+                </div>
+              </div>
+              <div>
+                <span class="status-pill badge-pending">${o.status}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Render Diagnostics
+        const testsList = document.getElementById('testsList');
+        if (history.diagnostics.length === 0) {
+          testsList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🧪</div>
+              <p>No diagnostic tests scheduled.</p>
+            </div>
+          `;
+        } else {
+          testsList.innerHTML = history.diagnostics.map(t => `
+            <div class="history-card">
+              <div class="history-details">
+                <h4>${t.testName}</h4>
+                <p><strong>Patient:</strong> ${t.name}</p>
+                <div class="info-row">
+                  <div class="info-item">📅 Date: ${t.date}</div>
+                  <div class="info-item">⏰ Time Slot: ${t.timeSlot}</div>
+                </div>
+              </div>
+              <div>
+                <span class="status-pill badge-info">${t.status}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Render Emergency Ambulance Dispatches
+        const dispatchesList = document.getElementById('dispatchesList');
+        if (history.dispatches.length === 0) {
+          dispatchesList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🚨</div>
+              <p>No emergency ambulance dispatches requested.</p>
+            </div>
+          `;
+        } else {
+          dispatchesList.innerHTML = history.dispatches.map(d => `
+            <div class="history-card">
+              <div class="history-details">
+                <h4>Ambulance Requested for ${d.condition}</h4>
+                <p><strong>Emergency Location:</strong> ${d.location}</p>
+                <div class="info-row">
+                  <div class="info-item">📅 Date: ${new Date(d.createdAt).toLocaleString()}</div>
+                </div>
+              </div>
+              <div>
+                <span class="status-pill badge-success" style="background:#fee2e2; color:#dc2626;">${d.status}</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (err) {
+        console.error('History Fetch Error:', err);
+      }
+
+      // Health Profile JavaScript Logic
+      let currentHealthProfile = null;
+      let currentFamilyMembers = [];
+      let selectedFamilyMember = null;
+
+      window.openCustomModal = function(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+      };
+
+      window.closeCustomModal = function(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      };
+
+      window.switchModalTab = function(btn) {
+        const modal = btn.closest('.custom-modal');
+        modal.querySelectorAll('.modal-tab-btn').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const targetTab = btn.dataset.tab;
+        modal.querySelectorAll('.modal-tab-view').forEach(view => {
+          view.style.display = view.id === targetTab ? 'block' : 'none';
+        });
+      };
+
+      // Load health profile from backend
+      async function loadHealthProfile() {
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/profile?email=${encodeURIComponent(loggedUser.email)}`);
+          if (!res.ok) throw new Error('Failed to fetch profile.');
+          currentHealthProfile = await res.json();
+          
+          // Render personal health
+          const ph = currentHealthProfile.personalHealth || {};
+          document.getElementById('phFullName').textContent = ph.fullName || '-';
+          document.getElementById('phDob').textContent = ph.dob || '-';
+          document.getElementById('phGender').textContent = ph.gender || '-';
+          document.getElementById('phBloodType').textContent = ph.bloodType || '-';
+          document.getElementById('phHeight').textContent = ph.height ? ph.height + ' cm' : '-';
+          document.getElementById('phWeight').textContent = ph.weight ? ph.weight + ' kg' : '-';
+          document.getElementById('phPhone').textContent = ph.phone || '-';
+          document.getElementById('phEmail').textContent = ph.email || '-';
+          document.getElementById('phEmergencyContact').textContent = ph.emergencyContact || '-';
+          document.getElementById('phAddress').textContent = ph.address || '-';
+
+          // Render medical summary
+          const ms = currentHealthProfile.medicalSummary || {};
+          document.getElementById('msAllergies').textContent = ms.allergies || '-';
+          document.getElementById('msConditions').textContent = ms.conditions || '-';
+          document.getElementById('msMedications').textContent = ms.medications || '-';
+          document.getElementById('msSurgeries').textContent = ms.surgeries || '-';
+          document.getElementById('msIllnesses').textContent = ms.illnesses || '-';
+          document.getElementById('msVaccination').textContent = ms.vaccination || '-';
+          document.getElementById('msFamilyRisk').textContent = ms.familyRisk || '-';
+          document.getElementById('msNotes').textContent = ms.notes || '-';
+
+          renderPersonalHistory();
+        } catch (err) {
+          console.error('Error loading health profile:', err);
+        }
+      }
+
+      function renderPersonalHistory() {
+        const listEl = document.getElementById('personalHistoryList');
+        const records = currentHealthProfile.medicalHistory || [];
+        if (records.length === 0) {
+          listEl.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📋</div>
+              <p>No medical history records added yet.</p>
+            </div>
+          `;
+          return;
+        }
+
+        listEl.innerHTML = records.map(r => `
+          <div class="history-card" style="align-items: flex-start; gap: 16px;">
+            <div class="history-details" style="flex: 1;">
+              <h4 style="font-size: 16px; color: #0f172a; font-weight: 700;">${r.disease}</h4>
+              <div style="margin-top: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 13px;">
+                <p><strong>Diagnosed:</strong> ${r.date}</p>
+                <p><strong>Treatment:</strong> ${r.treatment}</p>
+                <p><strong>Hospital:</strong> ${r.hospital}</p>
+                <p><strong>Medication:</strong> ${r.medication}</p>
+                <p><strong>Status:</strong> <span class="status-pill ${r.status === 'Recovered' ? 'badge-success' : 'badge-pending'}">${r.status}</span></p>
+              </div>
+              ${r.notes ? `<p style="margin-top: 8px; background: #f8fafc; padding: 8px; border-radius: 6px; font-size: 12px; font-style: italic;"><strong>Notes:</strong> ${r.notes}</p>` : ''}
+            </div>
+            <button class="report-action-link delete-link" onclick="deletePersonalHistory('${r.id}')" style="background: transparent; border: none; font-weight: 700; cursor: pointer; padding: 4px; font-size: 12px; color: #dc2626;">Delete</button>
+          </div>
+        `).join('');
+      }
+
+      window.deletePersonalHistory = async function(recordId) {
+        if (!confirm('Are you sure you want to delete this medical record?')) return;
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/medical-history/${recordId}?email=${encodeURIComponent(loggedUser.email)}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete record.');
+          alert('Medical history record deleted successfully.');
+          loadHealthProfile();
+        } catch (err) {
+          alert(err.message);
+        }
+      };
+
+      // Personal Health Form Submission
+      document.getElementById('personalHealthForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const personalHealth = {
+          fullName: document.getElementById('phEditFullName').value,
+          dob: document.getElementById('phEditDob').value,
+          gender: document.getElementById('phEditGender').value,
+          bloodType: document.getElementById('phEditBloodType').value,
+          height: parseInt(document.getElementById('phEditHeight').value) || 0,
+          weight: parseInt(document.getElementById('phEditWeight').value) || 0,
+          phone: document.getElementById('phEditPhone').value,
+          email: document.getElementById('phEditEmail').value,
+          emergencyContact: document.getElementById('phEditEmergencyContact').value,
+          address: document.getElementById('phEditAddress').value
+        };
+        
+        const medicalSummary = currentHealthProfile ? currentHealthProfile.medicalSummary : {};
+
+        try {
+          const res = await fetch('http://localhost:3000/api/user/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: loggedUser.email, personalHealth, medicalSummary })
+          });
+          if (!res.ok) throw new Error('Failed to update personal health info.');
+          alert('Personal health information updated successfully.');
+          closeCustomModal('personalHealthModal');
+          loadHealthProfile();
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+
+      document.getElementById('editPersonalHealthBtn').addEventListener('click', () => {
+        const ph = (currentHealthProfile && currentHealthProfile.personalHealth) || {};
+        document.getElementById('phEditFullName').value = ph.fullName || loggedUser.name;
+        document.getElementById('phEditDob').value = ph.dob || '';
+        document.getElementById('phEditGender').value = ph.gender || 'Male';
+        document.getElementById('phEditBloodType').value = ph.bloodType || 'A+';
+        document.getElementById('phEditHeight').value = ph.height || '';
+        document.getElementById('phEditWeight').value = ph.weight || '';
+        document.getElementById('phEditPhone').value = ph.phone || loggedUser.mobile;
+        document.getElementById('phEditEmail').value = ph.email || loggedUser.email;
+        document.getElementById('phEditEmergencyContact').value = ph.emergencyContact || '';
+        document.getElementById('phEditAddress').value = ph.address || '';
+        openCustomModal('personalHealthModal');
+      });
+
+      // Medical Summary Form Submission
+      document.getElementById('medicalSummaryForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const medicalSummary = {
+          allergies: document.getElementById('msEditAllergies').value,
+          conditions: document.getElementById('msEditConditions').value,
+          medications: document.getElementById('msEditMedications').value,
+          surgeries: document.getElementById('msEditSurgeries').value,
+          illnesses: document.getElementById('msEditIllnesses').value,
+          vaccination: document.getElementById('msEditVaccination').value,
+          familyRisk: document.getElementById('msEditFamilyRisk').value,
+          notes: document.getElementById('msEditNotes').value
+        };
+        
+        const personalHealth = currentHealthProfile ? currentHealthProfile.personalHealth : {};
+
+        try {
+          const res = await fetch('http://localhost:3000/api/user/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: loggedUser.email, personalHealth, medicalSummary })
+          });
+          if (!res.ok) throw new Error('Failed to update medical summary.');
+          alert('Medical summary updated successfully.');
+          closeCustomModal('medicalSummaryModal');
+          loadHealthProfile();
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+
+      document.getElementById('editMedicalSummaryBtn').addEventListener('click', () => {
+        const ms = (currentHealthProfile && currentHealthProfile.medicalSummary) || {};
+        document.getElementById('msEditAllergies').value = ms.allergies || '';
+        document.getElementById('msEditConditions').value = ms.conditions || '';
+        document.getElementById('msEditMedications').value = ms.medications || '';
+        document.getElementById('msEditSurgeries').value = ms.surgeries || '';
+        document.getElementById('msEditIllnesses').value = ms.illnesses || '';
+        document.getElementById('msEditVaccination').value = ms.vaccination || '';
+        document.getElementById('msEditFamilyRisk').value = ms.familyRisk || '';
+        document.getElementById('msEditNotes').value = ms.notes || '';
+        openCustomModal('medicalSummaryModal');
+      });
+
+      // Medical History Form Submission (Unified for patient and family members)
+      document.getElementById('medicalHistoryForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const record = {
+          disease: document.getElementById('histDisease').value,
+          date: document.getElementById('histDate').value,
+          treatment: document.getElementById('histTreatment').value,
+          hospital: document.getElementById('histHospital').value,
+          medication: document.getElementById('histMedication').value,
+          status: document.getElementById('histStatus').value,
+          notes: document.getElementById('histNotes').value
+        };
+        
+        const familyMemberId = document.getElementById('historyFormFamilyId').value;
+
+        try {
+          let url = 'http://localhost:3000/api/user/medical-history';
+          if (familyMemberId) {
+            url = `http://localhost:3000/api/user/family/${familyMemberId}/medical-history`;
+          }
+          
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: loggedUser.email, record })
+          });
+          if (!res.ok) throw new Error('Failed to add medical history record.');
+          
+          alert('Medical history record added successfully.');
+          closeCustomModal('medicalHistoryModal');
+          
+          if (familyMemberId) {
+            await loadFamilyMembers();
+            const updatedMember = currentFamilyMembers.find(m => m.id === familyMemberId);
+            if (updatedMember) {
+              openFamilyDetails(updatedMember);
+            }
+          } else {
+            loadHealthProfile();
+          }
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+
+      document.getElementById('addMedicalHistoryBtn').addEventListener('click', () => {
+        document.getElementById('historyFormFamilyId').value = '';
+        document.getElementById('historyModalHeading').textContent = 'Add Medical History';
+        document.getElementById('medicalHistoryForm').reset();
+        openCustomModal('medicalHistoryModal');
+      });
+
+      window.openAddFamHistoryModal = function() {
+        if (!selectedFamilyMember) return;
+        document.getElementById('historyFormFamilyId').value = selectedFamilyMember.id;
+        document.getElementById('historyModalHeading').textContent = `Add Medical History for ${selectedFamilyMember.personalInfo.fullName}`;
+        document.getElementById('medicalHistoryForm').reset();
+        openCustomModal('medicalHistoryModal');
+      };
+
+      // Load Family Members List
+      async function loadFamilyMembers() {
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/family?email=${encodeURIComponent(loggedUser.email)}`);
+          if (!res.ok) throw new Error('Failed to fetch family members.');
+          currentFamilyMembers = await res.json();
+          renderFamilyGrid();
+        } catch (err) {
+          console.error('Error loading family members:', err);
+        }
+      }
+
+      function renderFamilyGrid() {
+        const grid = document.getElementById('familyGrid');
+        if (currentFamilyMembers.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1; width: 100%;">
+              <div class="empty-state-icon">👥</div>
+              <p>No family members added yet. Click "+ Add Family Member" to get started.</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = currentFamilyMembers.map(m => {
+          const rel = m.relationship === 'Other' ? m.customRelationship : m.relationship;
+          const p = m.personalInfo || {};
+          return `
+            <div class="family-card" onclick="handleFamilyCardClick('${m.id}')">
+              <div class="family-card-header">
+                <div class="family-avatar">${p.fullName ? p.fullName[0].toUpperCase() : '?'}</div>
+                <div>
+                  <h4 class="family-card-name">${p.fullName || '-'}</h4>
+                  <span class="family-card-relation">${rel || '-'}</span>
+                </div>
+              </div>
+              <div class="family-details-row">
+                <div class="family-details-item"><strong>DOB:</strong> ${p.dob || '-'}</div>
+                <div class="family-details-item"><strong>Blood Type:</strong> ${p.bloodType || '-'}</div>
+                <div class="family-details-item"><strong>Allergies:</strong> ${m.medicalInfo?.allergies || 'None'}</div>
+              </div>
+              <div style="display: flex; gap: 12px; margin-top: auto; border-top: 1px solid #e2e8f0; padding-top: 12px; justify-content: flex-end;">
+                <button class="edit-profile-btn" onclick="editFamilyMember(event, '${m.id}')" style="font-size: 12px; padding: 4px 8px;">Edit Info</button>
+                <button class="report-action-link delete-link" onclick="deleteFamilyMember(event, '${m.id}')" style="background: transparent; border: none; font-weight: 700; cursor: pointer; padding: 4px 8px; font-size: 12px;">Remove</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.toggleCustomRelationship = function() {
+        const relSelect = document.getElementById('famRelationship');
+        const field = document.getElementById('customRelationshipField');
+        if (relSelect.value === 'Other') {
+          field.style.display = 'flex';
+          document.getElementById('famCustomRelationship').required = true;
+        } else {
+          field.style.display = 'none';
+          document.getElementById('famCustomRelationship').required = false;
+        }
+      };
+
+      document.getElementById('addFamilyMemberBtn').addEventListener('click', () => {
+        document.getElementById('famEditId').value = '';
+        document.getElementById('familyMemberModalTitle').textContent = 'Add Family Member';
+        document.getElementById('familyMemberForm').reset();
+        document.getElementById('customRelationshipField').style.display = 'none';
+        openCustomModal('familyMemberModal');
+      });
+
+      window.editFamilyMember = function(event, memberId) {
+        event.stopPropagation();
+        const m = currentFamilyMembers.find(x => x.id === memberId);
+        if (!m) return;
+        
+        document.getElementById('famEditId').value = m.id;
+        document.getElementById('familyMemberModalTitle').textContent = 'Edit Family Member Info';
+        
+        const p = m.personalInfo || {};
+        const med = m.medicalInfo || {};
+
+        document.getElementById('famFullName').value = p.fullName || '';
+        document.getElementById('famRelationship').value = m.relationship || 'Father';
+        if (m.relationship === 'Other') {
+          document.getElementById('customRelationshipField').style.display = 'flex';
+          document.getElementById('famCustomRelationship').value = m.customRelationship || '';
+          document.getElementById('famCustomRelationship').required = true;
+        } else {
+          document.getElementById('customRelationshipField').style.display = 'none';
+          document.getElementById('famCustomRelationship').value = '';
+          document.getElementById('famCustomRelationship').required = false;
+        }
+        document.getElementById('famDob').value = p.dob || '';
+        document.getElementById('famGender').value = p.gender || 'Male';
+        document.getElementById('famBloodType').value = p.bloodType || 'A+';
+        document.getElementById('famHeight').value = p.height || '';
+        document.getElementById('famWeight').value = p.weight || '';
+        
+        document.getElementById('famPhone').value = p.phone || '';
+        document.getElementById('famEmail').value = p.email || '';
+        document.getElementById('famEmergencyContact').value = p.emergencyContact || '';
+        document.getElementById('famAddress').value = p.address || '';
+        
+        document.getElementById('famAllergies').value = med.allergies || '';
+        document.getElementById('famConditions').value = med.conditions || '';
+        document.getElementById('famMedications').value = med.medications || '';
+        document.getElementById('famSurgeries').value = med.surgeries || '';
+        document.getElementById('famIllnesses').value = med.illnesses || '';
+        document.getElementById('famVaccination').value = med.vaccination || '';
+        document.getElementById('famHistory').value = med.familyHistory || '';
+        document.getElementById('famNotes').value = med.notes || '';
+
+        openCustomModal('familyMemberModal');
+      };
+
+      document.getElementById('familyMemberForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const memberId = document.getElementById('famEditId').value;
+        
+        const relationship = document.getElementById('famRelationship').value;
+        const customRelationship = relationship === 'Other' ? document.getElementById('famCustomRelationship').value : '';
+
+        const personalInfo = {
+          fullName: document.getElementById('famFullName').value,
+          dob: document.getElementById('famDob').value,
+          gender: document.getElementById('famGender').value,
+          bloodType: document.getElementById('famBloodType').value,
+          height: parseInt(document.getElementById('famHeight').value) || 0,
+          weight: parseInt(document.getElementById('famWeight').value) || 0,
+          phone: document.getElementById('famPhone').value,
+          email: document.getElementById('famEmail').value,
+          emergencyContact: document.getElementById('famEmergencyContact').value,
+          address: document.getElementById('famAddress').value
+        };
+
+        const medicalInfo = {
+          allergies: document.getElementById('famAllergies').value,
+          conditions: document.getElementById('famConditions').value,
+          medications: document.getElementById('famMedications').value,
+          surgeries: document.getElementById('famSurgeries').value,
+          illnesses: document.getElementById('famIllnesses').value,
+          vaccination: document.getElementById('famVaccination').value,
+          familyHistory: document.getElementById('famHistory').value,
+          notes: document.getElementById('famNotes').value
+        };
+
+        const memberPayload = { relationship, customRelationship, personalInfo, medicalInfo };
+
+        try {
+          let res;
+          if (memberId) {
+            // Update existing
+            res = await fetch(`http://localhost:3000/api/user/family/${memberId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: loggedUser.email, member: memberPayload })
+            });
+          } else {
+            // Add new
+            res = await fetch('http://localhost:3000/api/user/family', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: loggedUser.email, member: memberPayload })
+            });
+          }
+          if (!res.ok) throw new Error('Failed to save family member.');
+          alert(memberId ? 'Family member updated successfully.' : 'Family member added successfully.');
+          closeCustomModal('familyMemberModal');
+          loadFamilyMembers();
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+
+      window.deleteFamilyMember = async function(event, memberId) {
+        event.stopPropagation();
+        if (!confirm('Are you sure you want to delete this family member? All their data, including medical history and reports, will be permanently deleted.')) return;
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/family/${memberId}?email=${encodeURIComponent(loggedUser.email)}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete family member.');
+          alert('Family member removed.');
+          loadFamilyMembers();
+        } catch (err) {
+          alert(err.message);
+        }
+      };
+
+      // Open family member details
+      window.handleFamilyCardClick = function(memberId) {
+        const m = currentFamilyMembers.find(x => x.id === memberId);
+        if (!m) return;
+        openFamilyDetails(m);
+      };
+
+      function openFamilyDetails(member) {
+        selectedFamilyMember = member;
+        document.getElementById('fdMemberName').textContent = `${member.personalInfo.fullName}'s Profile`;
+        
+        // Default to overview tab
+        const overviewBtn = document.querySelector('.modal-tab-btn[data-tab="fd-overview"]');
+        if (overviewBtn) switchModalTab(overviewBtn);
+
+        // Render personal values
+        const p = member.personalInfo || {};
+        const rel = member.relationship === 'Other' ? member.customRelationship : member.relationship;
+        document.getElementById('fdFullNameVal').textContent = p.fullName || '-';
+        document.getElementById('fdRelationshipVal').textContent = rel || '-';
+        document.getElementById('fdDobVal').textContent = p.dob || '-';
+        document.getElementById('fdGenderVal').textContent = p.gender || '-';
+        document.getElementById('fdBloodTypeVal').textContent = p.bloodType || '-';
+        document.getElementById('fdHeightVal').textContent = p.height ? p.height + ' cm' : '-';
+        document.getElementById('fdWeightVal').textContent = p.weight ? p.weight + ' kg' : '-';
+        document.getElementById('fdPhoneVal').textContent = p.phone || '-';
+        document.getElementById('fdEmailVal').textContent = p.email || '-';
+        document.getElementById('fdEmergencyVal').textContent = p.emergencyContact || '-';
+        document.getElementById('fdAddressVal').textContent = p.address || '-';
+
+        // Render medical values
+        const med = member.medicalInfo || {};
+        document.getElementById('fdAllergiesVal').textContent = med.allergies || 'None';
+        document.getElementById('fdConditionsVal').textContent = med.conditions || 'None';
+        document.getElementById('fdMedicationsVal').textContent = med.medications || 'None';
+        document.getElementById('fdSurgeriesVal').textContent = med.surgeries || 'None';
+        document.getElementById('fdIllnessesVal').textContent = med.illnesses || 'None';
+        document.getElementById('fdVaccinationVal').textContent = med.vaccination || 'None';
+        document.getElementById('fdNotesVal').textContent = med.notes || 'None';
+
+        renderFamHistory();
+        renderFamReports();
+
+        openCustomModal('familyDetailsModal');
+      }
+
+      function renderFamHistory() {
+        const el = document.getElementById('fdHistoryList');
+        const records = selectedFamilyMember.medicalHistory || [];
+        if (records.length === 0) {
+          el.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📋</div>
+              <p>No medical history records added for this family member yet.</p>
+            </div>
+          `;
+          return;
+        }
+
+        el.innerHTML = records.map(r => `
+          <div class="history-card" style="align-items: flex-start; gap: 16px;">
+            <div class="history-details" style="flex: 1;">
+              <h4 style="font-size: 15px; color: #0f172a; font-weight: 700;">${r.disease}</h4>
+              <div style="margin-top: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 6px; font-size: 12px;">
+                <p><strong>Diagnosed:</strong> ${r.date}</p>
+                <p><strong>Treatment:</strong> ${r.treatment}</p>
+                <p><strong>Hospital:</strong> ${r.hospital}</p>
+                <p><strong>Medication:</strong> ${r.medication}</p>
+                <p><strong>Status:</strong> <span class="status-pill ${r.status === 'Recovered' ? 'badge-success' : 'badge-pending'}">${r.status}</span></p>
+              </div>
+              ${r.notes ? `<p style="margin-top: 6px; background: #f8fafc; padding: 6px; border-radius: 6px; font-size: 12px; font-style: italic;"><strong>Notes:</strong> ${r.notes}</p>` : ''}
+            </div>
+            <button class="report-action-link delete-link" onclick="deleteFamHistory('${r.id}')" style="background: transparent; border: none; font-weight: 700; cursor: pointer; padding: 4px; font-size: 12px; color: #dc2626;">Delete</button>
+          </div>
+        `).join('');
+      }
+
+      window.deleteFamHistory = async function(recordId) {
+        if (!confirm('Are you sure you want to delete this medical record?')) return;
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/family/${selectedFamilyMember.id}/medical-history/${recordId}?email=${encodeURIComponent(loggedUser.email)}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete medical history.');
+          alert('Medical history record deleted successfully.');
+          
+          await loadFamilyMembers();
+          const updatedMember = currentFamilyMembers.find(m => m.id === selectedFamilyMember.id);
+          if (updatedMember) {
+            openFamilyDetails(updatedMember);
+          }
+        } catch (err) {
+          alert(err.message);
+        }
+      };
+
+      // Medical Reports rendering and operations
+      function renderFamReports() {
+        const el = document.getElementById('fdReportsList');
+        const reports = selectedFamilyMember.medicalReports || [];
+        if (reports.length === 0) {
+          el.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📄</div>
+              <p>No medical reports uploaded yet.</p>
+            </div>
+          `;
+          return;
+        }
+
+        el.innerHTML = reports.map(r => `
+          <div class="report-item">
+            <div class="report-details">
+              <h5 style="font-weight: 700;">📄 ${r.name}</h5>
+              <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+                <strong>Type:</strong> ${r.type} | <strong>Uploaded:</strong> ${r.uploadDate} | <strong>Size:</strong> ${r.size}
+              </p>
+              ${r.doctor ? `<p style="font-size: 12px; color: #64748b;"><strong>Doctor/Hospital:</strong> ${r.doctor}</p>` : ''}
+              ${r.notes ? `<p style="font-style: italic; color: #475569; font-size: 12px; margin-top: 4px;">Note: ${r.notes}</p>` : ''}
+            </div>
+            <div class="report-actions">
+              <button class="report-action-link" onclick="viewPdfReport('${r.filename}')" style="background:transparent; border:none; cursor:pointer;">View</button>
+              <button class="report-action-link" onclick="downloadPdfReport('${r.filename}', '${r.originalName}')" style="background:transparent; border:none; cursor:pointer;">Download</button>
+              <button class="report-action-link delete-link" onclick="deletePdfReport('${r.id}')" style="background:transparent; border:none; cursor:pointer;">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      window.viewPdfReport = function(filename) {
+        const url = `http://localhost:3000/api/user/reports/${filename}?email=${encodeURIComponent(loggedUser.email)}`;
+        window.open(url, '_blank');
+      };
+
+      window.downloadPdfReport = function(filename, originalName) {
+        const url = `http://localhost:3000/api/user/reports/${filename}?email=${encodeURIComponent(loggedUser.email)}`;
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = originalName || 'report.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      window.deletePdfReport = async function(reportId) {
+        if (!confirm('Are you sure you want to permanently delete this medical report?')) return;
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/family/${selectedFamilyMember.id}/reports/${reportId}?email=${encodeURIComponent(loggedUser.email)}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete report.');
+          alert('Medical report deleted successfully.');
+          
+          await loadFamilyMembers();
+          const updatedMember = currentFamilyMembers.find(m => m.id === selectedFamilyMember.id);
+          if (updatedMember) {
+            openFamilyDetails(updatedMember);
+          }
+        } catch (err) {
+          alert(err.message);
+        }
+      };
+
+      window.openUploadReportModal = function() {
+        if (!selectedFamilyMember) return;
+        document.getElementById('uploadReportFamilyId').value = selectedFamilyMember.id;
+        document.getElementById('uploadReportForm').reset();
+        
+        document.getElementById('uploadProgressContainer').style.display = 'none';
+        document.getElementById('uploadProgressBar').style.width = '0%';
+        document.getElementById('uploadProgressPercent').textContent = '0%';
+        document.getElementById('uploadStatusMessage').textContent = '';
+        document.getElementById('submitUploadReportBtn').disabled = false;
+
+        openCustomModal('uploadReportModal');
+      };
+
+      document.getElementById('uploadReportForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const fileInput = document.getElementById('reportPdfFile');
+        const file = fileInput.files[0];
+        
+        if (file && file.type !== 'application/pdf') {
+          alert('Only PDF medical reports are supported.');
+          return;
+        }
+
+        const famId = document.getElementById('uploadReportFamilyId').value;
+        const formData = new FormData();
+        formData.append('pdf', file);
+        formData.append('email', loggedUser.email);
+        formData.append('name', document.getElementById('reportName').value);
+        formData.append('type', document.getElementById('reportType').value);
+        formData.append('date', document.getElementById('reportDate').value);
+        formData.append('doctor', document.getElementById('reportDoctor').value);
+        formData.append('notes', document.getElementById('reportNotes').value);
+
+        const xhr = new XMLHttpRequest();
+        
+        document.getElementById('uploadProgressContainer').style.display = 'flex';
+        document.getElementById('submitUploadReportBtn').disabled = true;
+        document.getElementById('uploadStatusMessage').textContent = '';
+
+        xhr.upload.addEventListener('progress', function(event) {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            document.getElementById('uploadProgressBar').style.width = percentComplete + '%';
+            document.getElementById('uploadProgressPercent').textContent = percentComplete + '%';
+          }
+        });
+
+        xhr.addEventListener('load', function() {
+          if (xhr.status === 200 || xhr.status === 201) {
+            document.getElementById('uploadStatusMessage').style.color = '#059669';
+            document.getElementById('uploadStatusMessage').textContent = 'Report uploaded successfully!';
+            setTimeout(async () => {
+              closeCustomModal('uploadReportModal');
+              await loadFamilyMembers();
+              const updatedMember = currentFamilyMembers.find(m => m.id === famId);
+              if (updatedMember) {
+                openFamilyDetails(updatedMember);
+              }
+            }, 1200);
+          } else {
+            let errorMsg = 'Failed to upload report.';
+            try {
+              const errJson = JSON.parse(xhr.responseText);
+              errorMsg = errJson.message || errorMsg;
+            } catch(ex) {}
+            document.getElementById('uploadStatusMessage').style.color = '#dc2626';
+            document.getElementById('uploadStatusMessage').textContent = errorMsg;
+            document.getElementById('submitUploadReportBtn').disabled = false;
+          }
+        });
+
+        xhr.addEventListener('error', function() {
+          document.getElementById('uploadStatusMessage').style.color = '#dc2626';
+          document.getElementById('uploadStatusMessage').textContent = 'Network error occurred during upload.';
+          document.getElementById('submitUploadReportBtn').disabled = false;
+        });
+
+        xhr.open('POST', `http://localhost:3000/api/user/family/${famId}/reports`);
+        xhr.send(formData);
+      });
+
+      // Initialize Health Profile and Family Data
+      await loadHealthProfile();
+      await loadFamilyMembers();
+
+      // Sync mobile navigation toggler
+      const menuButton = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileNavMenu');
+      menuButton?.addEventListener('click', () => {
+        const isOpen = mobileMenu.style.display === 'flex';
+        mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      });
+    });
+  </script>
+</body>
+</html>

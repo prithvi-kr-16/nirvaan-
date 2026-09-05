@@ -1,0 +1,20 @@
+[
+  {
+    "id": "order-1787344633807",
+    "name": "Test Patient",
+    "phone": "9876543210",
+    "email": "testpatient@gmail.com",
+    "address": "123 Main St",
+    "items": [
+      {
+        "id": "med-1",
+        "name": "Paracetamol 650mg",
+        "quantity": 1,
+        "price": 40
+      }
+    ],
+    "total": 40,
+    "status": "Pending",
+    "createdAt": "2026-08-21T20:37:13.807Z"
+  }
+]

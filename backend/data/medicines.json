@@ -1,0 +1,66 @@
+[
+  {
+    "id": "med-1",
+    "name": "Paracetamol 650mg",
+    "price": 40,
+    "category": "OTC",
+    "description": "Fever reducer and pain reliever. Pack of 15 tablets.",
+    "manufacturer": "Cipla Ltd."
+  },
+  {
+    "id": "med-2",
+    "name": "Amoxicillin 500mg",
+    "price": 120,
+    "category": "Prescription",
+    "description": "Antibiotic used to treat bacterial infections. Pack of 10 capsules.",
+    "manufacturer": "Abbott Healthcare"
+  },
+  {
+    "id": "med-3",
+    "name": "Multivitamin Supreme",
+    "price": 250,
+    "category": "Vitamins",
+    "description": "Daily multivitamin and mineral supplement. bottle of 30 tablets.",
+    "manufacturer": "Revital"
+  },
+  {
+    "id": "med-4",
+    "name": "Digital BP Monitor",
+    "price": 1850,
+    "category": "Wellness",
+    "description": "Fully automatic upper arm blood pressure monitor.",
+    "manufacturer": "Omron"
+  },
+  {
+    "id": "med-5",
+    "name": "Ibuprofen 400mg",
+    "price": 45,
+    "category": "OTC",
+    "description": "Nonsteroidal anti-inflammatory drug (NSAID) to relieve pain and fever.",
+    "manufacturer": "Sun Pharma"
+  },
+  {
+    "id": "med-6",
+    "name": "Atorvastatin 10mg",
+    "price": 95,
+    "category": "Prescription",
+    "description": "Statin medication used to prevent cardiovascular disease and lower lipids.",
+    "manufacturer": "Lupin Ltd."
+  },
+  {
+    "id": "med-7",
+    "name": "Vitamin C 500mg Chews",
+    "price": 110,
+    "category": "Vitamins",
+    "description": "Chewable vitamin C tablets for immune support. Orange flavor. 30 count.",
+    "manufacturer": "Limcee"
+  },
+  {
+    "id": "med-8",
+    "name": "Pulse Oximeter",
+    "price": 999,
+    "category": "Wellness",
+    "description": "Fingertip pulse oximeter for measuring blood oxygen saturation and pulse rate.",
+    "manufacturer": "Dr. Trust"
+  }
+]

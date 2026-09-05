@@ -1,0 +1,50 @@
+{
+  "hosp-1": {
+    "name": "City Care Hospital",
+    "image": "./images/hospitals/city_care.jpg",
+    "verified": true,
+    "icuStatus": "available",
+    "icuText": "ICU Available",
+    "distance": "2.4 km away",
+    "sector": "Sector 12",
+    "location": "Sector 12, Medical Plaza, Metro City",
+    "services": ["icu care", "cardiology", "emergency medicine"],
+    "description": "City Care Hospital is a premier multi-specialty institution known for excellence in emergency medicine and cardiology. Featuring advanced critical care monitoring, responsive ICU chambers, and highly trained physicians available around the clock."
+  },
+  "hosp-2": {
+    "name": "Sunrise Hospital",
+    "image": "./images/hospitals/sunrise.jpg",
+    "verified": true,
+    "icuStatus": "full",
+    "icuText": "ICU Full",
+    "distance": "3.1 km away",
+    "sector": "Sector 8",
+    "location": "Sector 8, Sunrise Blvd, Metro City",
+    "services": ["pediatrics", "general medicine", "emergency medicine"],
+    "description": "Sunrise Hospital offers top-tier pediatric and general surgery services with specialized emergency care teams. While currently experiencing a high patient load in the ICU department, our comprehensive outpatient clinic and urgent care units remain fully operational."
+  },
+  "hosp-3": {
+    "name": "Hope Multi-Speciality",
+    "image": "./images/hospitals/hope.jpg",
+    "verified": true,
+    "icuStatus": "available",
+    "icuText": "ICU Available",
+    "distance": "4.2 km away",
+    "sector": "Sector 21",
+    "location": "Sector 21, Ring Road, Metro City",
+    "services": ["neurology", "orthopedics", "diagnostics"],
+    "description": "Hope Multi-Speciality Hospital excels in neurology and orthopedics diagnostics. Features modern private suites, a state-of-the-art diagnostic imaging center, and an automated pharmacy hub connected directly to regional paramedics."
+  },
+  "hosp-4": {
+    "name": "Life Care Hospital",
+    "image": "./images/hospitals/life_care.jpg",
+    "verified": true,
+    "icuStatus": "available",
+    "icuText": "ICU Available",
+    "distance": "5.3 km away",
+    "sector": "Sector 15",
+    "location": "Sector 15, Green Park Avenue, Metro City",
+    "services": ["general medicine", "emergency medicine", "diagnostics"],
+    "description": "Life Care Hospital provides general internal medicine services, wellness testing, and critical trauma management. Known for short wait times in emergency registration and top rating in patient safety certifications."
+  }
+}

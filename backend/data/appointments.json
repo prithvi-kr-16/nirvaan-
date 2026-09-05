@@ -1,0 +1,14 @@
+[
+  {
+    "id": "appt-1787344571256",
+    "type": "doctor",
+    "doctorId": "doc-1",
+    "doctorName": "Dr. Sarah Alston",
+    "name": "Test Patient",
+    "phone": "9876543210",
+    "email": "testpatient@gmail.com",
+    "date": "2026-09-01",
+    "timeSlot": "09:00 AM - 11:00 AM",
+    "createdAt": "2026-08-21T20:36:11.256Z"
+  }
+]
