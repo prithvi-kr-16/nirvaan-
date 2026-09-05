@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | NIRVAAN</title>
+  <link rel="stylesheet" href="./CSS/style.css" />
+</head>
+
+<body>
+  <main class="auth-page">
+    <div class="auth-page-card">
+      <a href="./index.html" class="auth-page-brand"
+        style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-heart-pulse">
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          <path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27" />
+        </svg>
+        <span style="font-weight: 800; font-size: 20px;">NIRVAAN</span>
+      </a>
+
+      <div class="auth-page-header">
+        <h1>Welcome Back</h1>
+        <p>Login to your NIRVAAN account</p>
+      </div>
+
+      <form id="login-form" class="auth-page-form">
+        <div class="form-field">
+          <label for="login-email">Email / Mobile Number</label>
+          <input type="text" id="login-email" placeholder="Enter email or mobile number" required />
+        </div>
+
+        <div class="form-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required />
+        </div>
+
+        <div class="auth-login-options"
+          style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin: 4px 0;">
+          <label class="auth-check"
+            style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted);">
+            <input type="checkbox" /> Remember me
+          </label>
+          <a href="#" style="color: var(--primary); font-weight: 700; text-decoration: none;">Forgot Password?</a>
+        </div>
+
+        <div id="login-status" style="font-size: 13px; text-align: center; font-weight: 600; min-height: 18px; margin-top: 4px;"></div>
+        <button type="submit" class="auth-btn-solid">Login</button>
+      </form>
+
+      <div class="auth-page-switch">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const identifier = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      const statusEl = document.getElementById('login-status');
+      statusEl.textContent = '';
+      statusEl.style.color = 'red';
+
+      if (!identifier || !password) {
+        statusEl.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      try {
+        statusEl.style.color = '#008b9b';
+        statusEl.textContent = 'Logging in...';
+
+        const response = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Login failed.');
+        }
+
+        statusEl.style.color = 'green';
+        statusEl.textContent = 'Login successful!';
+
+        sessionStorage.setItem('user', JSON.stringify(data.user));
+
+        setTimeout(() => {
+          window.location.href = './index.html';
+        }, 1000);
+
+      } catch (err) {
+        statusEl.style.color = 'red';
+        statusEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+
+</html>
