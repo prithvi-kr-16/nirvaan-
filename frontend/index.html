@@ -34,9 +34,9 @@
 
         <!-- Desktop Nav Links -->
         <nav class="desktop-nav" id="desktopNav">
-          <a href="./index.html" class="nav-link">Home</a>
+          <a href="./index.html" class="nav-link active">Home</a>
           <a href="./find-care.html" class="nav-link">Find Care</a>
-          <a href="./doctors.html" class="nav-link">Doctors</a>
+          <a href="./hospitals.html" class="nav-link">Hospitals</a>
           <a href="./emergency.html" class="nav-link">Emergency</a>
           <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
@@ -87,9 +87,9 @@
       <!-- Mobile Navigation Dropdown -->
       <div class="mobile-nav-menu" id="mobileNavMenu" style="display: none;">
         <nav class="mobile-nav-links">
-          <a href="./index.html" class="mobile-nav-link">Home</a>
+          <a href="./index.html" class="mobile-nav-link active">Home</a>
           <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
-          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
+          <a href="./hospitals.html" class="mobile-nav-link">Hospitals</a>
           <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
           <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
@@ -104,10 +104,12 @@
     <!-- Main Content -->
     <main class="main-content">
       <!-- Hero Section -->
-      <section class="hero-section">
+      <section class="hero-section"
+        style="background: linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 45%, rgba(255, 255, 255, 0.3) 100%), url('./images/hero_background.jpg') center right/cover no-repeat;">
         <div class="hero-container">
           <!-- Left Side Content -->
           <div class="hero-content">
+
             <div class="badge-tag">
               <!-- Sparkles Icon -->
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -126,7 +128,7 @@
               When every minute matters, the right care should be easier to find.
             </h1>
             <p class="hero-description">
-              Find the best hospitals, doctors, pharmacies and diagnostics near you.
+              Find the best hospitals, emergency centers, pharmacies and diagnostics near you.
               Get emergency help instantly and manage your health journey in one place.
             </p>
 
@@ -184,7 +186,6 @@
               <!-- Toggle Tabs -->
               <div class="search-tabs">
                 <button class="search-tab active" id="tabHospitals" role="tab" aria-selected="true">Hospitals</button>
-                <button class="search-tab" id="tabDoctors" role="tab" aria-selected="false">Doctors</button>
               </div>
 
               <!-- Form Fields -->
@@ -276,25 +277,6 @@
             <div class="service-details">
               <h3 class="service-name">Hospitals</h3>
               <p class="service-description">Find nearby hospitals</p>
-            </div>
-          </a>
-
-          <!-- Doctors Card -->
-          <a class="service-card" data-service="doctors" href="./doctors.html">
-            <div class="service-icon-wrapper service-blue">
-              <!-- Stethoscope Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-stethoscope">
-                <path d="M4.5 16.5c-1.5 1.26-2.5 3.19-2.5 5.5s1 4.24 2.5 5.5" />
-                <path d="M12 2v10.5a6 6 0 1 1-12 0V10" />
-                <path d="M12 5h10.5a6 6 0 0 1 0 12H19" />
-                <circle cx="19" cy="10" r="2" />
-              </svg>
-            </div>
-            <div class="service-details">
-              <h3 class="service-name">Doctors</h3>
-              <p class="service-description">Consult specialists</p>
             </div>
           </a>
 
@@ -410,39 +392,37 @@
           <!-- Hospital 1 -->
           <div class="hospital-card" data-id="hosp-1">
             <div class="hospital-card-image-wrapper">
-              <img src="./images/hospitals/city_care.jpg" alt="City Care Hospital" class="hospital-card-image" />
+              <img src="./images/hospitals/city_care.jpg" alt="Arwal Sadar Hospital" class="hospital-card-image" />
             </div>
             <div class="hospital-card-content">
               <div class="hospital-card-title-row">
-                <h3 class="hospital-card-name">City Care Hospital</h3>
+                <h3 class="hospital-card-name">Arwal Sadar Hospital</h3>
                 <span class="verified-badge">
-                  <!-- ShieldCheck Icon -->
-                  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-shield-check verified-icon">
                     <path
                       d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
                     <path d="m9 12 2 2 4-4" />
-                  </svg> -->
+                  </svg>
                   <span>Verified</span>
                 </span>
               </div>
-              <p class="hospital-card-location">2.4 km away • Sector 12</p>
+              <p class="hospital-card-location">~1.5 km (approx.) • Opposite DM Residence, Arwal</p>
               <div class="hospital-card-badges">
                 <span class="badge-status status-available">ICU Available</span>
                 <span class="badge-status status-neutral">Emergency 24/7</span>
               </div>
               <div class="hospital-card-footer">
                 <div class="rating-display">
-                  <!-- Star Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-star star-icon">
                     <polygon
                       points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span class="rating-value">4.7</span>
-                  <span class="reviews-count">(1.2k reviews)</span>
+                  <span class="rating-value">4.2</span>
+                  <span class="reviews-count">(380 reviews)</span>
                 </div>
                 <button class="btn-view-details">View Details</button>
               </div>
@@ -452,13 +432,12 @@
           <!-- Hospital 2 -->
           <div class="hospital-card" data-id="hosp-2">
             <div class="hospital-card-image-wrapper">
-              <img src="./images/hospitals/sunrise.jpg" alt="Sunrise Hospital" class="hospital-card-image" />
+              <img src="./images/hospitals/sunrise.jpg" alt="Government Hospital, Arwal" class="hospital-card-image" />
             </div>
             <div class="hospital-card-content">
               <div class="hospital-card-title-row">
-                <h3 class="hospital-card-name">Sunrise Hospital</h3>
+                <h3 class="hospital-card-name">Government Hospital, Arwal</h3>
                 <span class="verified-badge">
-                  <!-- ShieldCheck Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-shield-check verified-icon">
@@ -469,22 +448,21 @@
                   <span>Verified</span>
                 </span>
               </div>
-              <p class="hospital-card-location">3.1 km away • Sector 8</p>
+              <p class="hospital-card-location">~3.0 km (approx.) • Arwal 804419</p>
               <div class="hospital-card-badges">
-                <span class="badge-status status-full">ICU Full</span>
+                <span class="badge-status status-available">2 Beds Left</span>
                 <span class="badge-status status-neutral">Emergency 24/7</span>
               </div>
               <div class="hospital-card-footer">
                 <div class="rating-display">
-                  <!-- Star Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-star star-icon">
                     <polygon
                       points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span class="rating-value">4.5</span>
-                  <span class="reviews-count">(980 reviews)</span>
+                  <span class="rating-value">3.9</span>
+                  <span class="reviews-count">(140 reviews)</span>
                 </div>
                 <button class="btn-view-details">View Details</button>
               </div>
@@ -494,39 +472,28 @@
           <!-- Hospital 3 -->
           <div class="hospital-card" data-id="hosp-3">
             <div class="hospital-card-image-wrapper">
-              <img src="./images/hospitals/hope.jpg" alt="Hope Multi-Speciality" class="hospital-card-image" />
+              <img src="./images/hospitals/hope.jpg" alt="Satyadev Multi Super Speciality Hospital"
+                class="hospital-card-image" />
             </div>
             <div class="hospital-card-content">
               <div class="hospital-card-title-row">
-                <h3 class="hospital-card-name">Hope Multi-Speciality</h3>
-                <span class="verified-badge">
-                  <!-- ShieldCheck Icon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-shield-check verified-icon">
-                    <path
-                      d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
-                    <path d="m9 12 2 2 4-4" />
-                  </svg>
-                  <span>Verified</span>
-                </span>
+                <h3 class="hospital-card-name">Satyadev Multi Super Speciality Hospital</h3>
               </div>
-              <p class="hospital-card-location">4.2 km away • Sector 21</p>
+              <p class="hospital-card-location">4.2 km away • Sipah Panchayat, Arwal</p>
               <div class="hospital-card-badges">
                 <span class="badge-status status-available">ICU Available</span>
-                <span class="badge-status status-neutral">Emergency 24/7</span>
+                <span class="badge-status status-neutral">Super Speciality</span>
               </div>
               <div class="hospital-card-footer">
                 <div class="rating-display">
-                  <!-- Star Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-star star-icon">
                     <polygon
                       points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span class="rating-value">4.6</span>
-                  <span class="reviews-count">(870 reviews)</span>
+                  <span class="rating-value">4.5</span>
+                  <span class="reviews-count">(220 reviews)</span>
                 </div>
                 <button class="btn-view-details">View Details</button>
               </div>
@@ -536,13 +503,73 @@
           <!-- Hospital 4 -->
           <div class="hospital-card" data-id="hosp-4">
             <div class="hospital-card-image-wrapper">
-              <img src="./images/hospitals/life_care.jpg" alt="Life Care Hospital" class="hospital-card-image" />
+              <img src="./images/hospitals/life_care.jpg" alt="Khursheed Ahmad Memorial Hospital"
+                class="hospital-card-image" />
             </div>
             <div class="hospital-card-content">
               <div class="hospital-card-title-row">
-                <h3 class="hospital-card-name">Life Care Hospital</h3>
+                <h3 class="hospital-card-name">Khursheed Ahmad Memorial Hospital</h3>
+              </div>
+              <p class="hospital-card-location">2.8 km away • Arwal 804401</p>
+              <div class="hospital-card-badges">
+                <span class="badge-status status-available">1 Bed Left</span>
+                <span class="badge-status status-neutral">Emergency Care</span>
+              </div>
+              <div class="hospital-card-footer">
+                <div class="rating-display">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-star star-icon">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span class="rating-value">4.0</span>
+                  <span class="reviews-count">(95 reviews)</span>
+                </div>
+                <button class="btn-view-details">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospital 5 -->
+          <div class="hospital-card" data-id="hosp-5">
+            <div class="hospital-card-image-wrapper">
+              <img src="./images/hospitals/city_care.jpg" alt="Pipra Hospital Pvt. Ltd" class="hospital-card-image" />
+            </div>
+            <div class="hospital-card-content">
+              <div class="hospital-card-title-row">
+                <h3 class="hospital-card-name">Pipra Hospital Pvt. Ltd</h3>
+              </div>
+              <p class="hospital-card-location">5.5 km away • Pipra, Arwal 804401</p>
+              <div class="hospital-card-badges">
+                <span class="badge-status status-full">ICU Full</span>
+                <span class="badge-status status-neutral">Outpatient Care</span>
+              </div>
+              <div class="hospital-card-footer">
+                <div class="rating-display">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-star star-icon">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span class="rating-value">3.8</span>
+                  <span class="reviews-count">(65 reviews)</span>
+                </div>
+                <button class="btn-view-details">View Details</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospital 6 -->
+          <div class="hospital-card" data-id="hosp-6">
+            <div class="hospital-card-image-wrapper">
+              <img src="./images/hospitals/hope.jpg" alt="Primary Health Centre, Arwal" class="hospital-card-image" />
+            </div>
+            <div class="hospital-card-content">
+              <div class="hospital-card-title-row">
+                <h3 class="hospital-card-name">Primary Health Centre, Arwal</h3>
                 <span class="verified-badge">
-                  <!-- ShieldCheck Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-shield-check verified-icon">
@@ -553,22 +580,21 @@
                   <span>Verified</span>
                 </span>
               </div>
-              <p class="hospital-card-location">5.3 km away • Sector 15</p>
+              <p class="hospital-card-location">~4.5 km (approx.) • Arwal 804427</p>
               <div class="hospital-card-badges">
-                <span class="badge-status status-available">ICU Available</span>
-                <span class="badge-status status-neutral">Emergency 24/7</span>
+                <span class="badge-status status-available">2 Beds Left</span>
+                <span class="badge-status status-neutral">Primary Care</span>
               </div>
               <div class="hospital-card-footer">
                 <div class="rating-display">
-                  <!-- Star Icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="lucide lucide-star star-icon">
                     <polygon
                       points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span class="rating-value">4.4</span>
-                  <span class="reviews-count">(760 reviews)</span>
+                  <span class="rating-value">4.1</span>
+                  <span class="reviews-count">(180 reviews)</span>
                 </div>
                 <button class="btn-view-details">View Details</button>
               </div>
@@ -596,7 +622,7 @@
               <span class="footer-brand-name">NIRVAAN</span>
             </div>
             <p class="footer-brand-desc">
-              Providing accessible, real-time medical care support and resource discovery. Connecting patients, doctors,
+              Providing accessible, real-time medical care support and resource discovery. Connecting patients
               and hospitals seamlessly when every second counts.
             </p>
             <div class="footer-socials">
@@ -630,8 +656,8 @@
           <div class="footer-links-col">
             <h4 class="footer-heading">Services</h4>
             <ul class="footer-links">
-              <li><a href="#">Find Hospitals</a></li>
-              <li><a href="#">Consult Doctors</a></li>
+              <li><a href="./hospitals.html">Find Hospitals</a></li>
+              <li><a href="./hospitals.html">Book Hospital Visit</a></li>
               <li><a href="#">Emergency Help</a></li>
               <li><a href="#">Pharmacy Ordering</a></li>
               <li><a href="#">Diagnostics Booking</a></li>
@@ -661,7 +687,7 @@
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <span>Sector 12, Medical Plaza, Metro City</span>
+                <span>Opposite DM Residence, Arwal, Bihar 804401</span>
               </li>
               <li>
                 <!-- Phone Icon -->
@@ -671,7 +697,7 @@
                   <path
                     d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
-                <span>+1 (555) 234-5678</span>
+                <span>9470003045</span>
               </li>
               <li>
                 <!-- Mail Icon -->
@@ -804,7 +830,7 @@
           id="detailHospitalImg" />
         <div class="details-hero-overlay">
           <div class="details-title-box">
-            <h3 id="detailHospitalName">City Care Hospital</h3>
+            <h3 id="detailHospitalName">Arwal Sadar Hospital</h3>
             <div class="details-badges-row">
               <span class="verified-badge" id="detailHospitalVerified">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -824,12 +850,12 @@
       <div class="details-body">
         <div class="details-info-section">
           <h4>About The Hospital</h4>
-          <p id="detailHospitalDesc">This hospital provides high-quality multi-specialty NIRVAAN services, fully
-            equipped state-of-the-art ICU chambers, and a 24/7 emergency unit with a team of top specialists ready to
-            deliver patient-centered medical attention.</p>
+          <p id="detailHospitalDesc">Arwal Sadar Hospital is the premier government district hospital in Arwal,
+            providing critical trauma care, maternal health, and round-the-clock emergency medical services.</p>
 
           <h4>Location & Distance</h4>
-          <p id="detailHospitalLocationText">Located in Sector 12, Medical Plaza, Metro City. Currently 2.4 km away from
+          <p id="detailHospitalLocationText">Located in Opposite DM Residence, Arwal, Bihar 804401. Currently ~1.5 km
+            (approx.) from
             your location.</p>
 
           <h4>Key Amenities</h4>

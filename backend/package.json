@@ -4,8 +4,7 @@
   "description": "Simple REST API backend for HealthCare app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "seed:doctors": "node scripts/seed-doctors.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

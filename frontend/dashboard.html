@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -504,7 +504,7 @@
         <nav class="desktop-nav" id="desktopNav">
           <a href="./index.html" class="nav-link">Home</a>
           <a href="./find-care.html" class="nav-link">Find Care</a>
-          <a href="./doctors.html" class="nav-link">Doctors</a>
+          <a href="./hospitals.html" class="nav-link">Hospitals</a>
           <a href="./emergency.html" class="nav-link">Emergency</a>
           <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
@@ -522,7 +522,7 @@
         <nav class="mobile-nav-links">
           <a href="./index.html" class="mobile-nav-link">Home</a>
           <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
-          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
+          <a href="./hospitals.html" class="mobile-nav-link">Hospitals</a>
           <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
           <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
@@ -832,7 +832,7 @@
           <input type="text" id="histTreatment" required />
         </div>
         <div class="form-field">
-          <label>Doctor / Hospital</label>
+          <label>Hospital</label>
           <input type="text" id="histHospital" required />
         </div>
         <div class="form-field">
@@ -1105,8 +1105,8 @@
           <input type="date" id="reportDate" required />
         </div>
         <div class="form-field">
-          <label>Doctor / Hospital</label>
-          <input type="text" id="reportDoctor" placeholder="e.g. Dr. Jane Smith" />
+          <label>Hospital</label>
+          <input type="text" id="reportHospital" placeholder="e.g. Arwal Sadar Hospital" />
         </div>
         <div class="form-field">
           <label>PDF File</label>
@@ -1203,7 +1203,7 @@
           appointmentsList.innerHTML = history.appointments.map(a => `
             <div class="history-card">
               <div class="history-details">
-                <h4>${a.type === 'doctor' ? a.doctorName : a.hospitalName}</h4>
+                <h4>${a.hospitalName || 'Hospital Appointment'}</h4>
                 <p><strong>Patient:</strong> ${a.name} (${a.phone})</p>
                 <div class="info-row">
                   <div class="info-item">📅 ${a.date}</div>
@@ -1866,7 +1866,7 @@
               <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
                 <strong>Type:</strong> ${r.type} | <strong>Uploaded:</strong> ${r.uploadDate} | <strong>Size:</strong> ${r.size}
               </p>
-              ${r.doctor ? `<p style="font-size: 12px; color: #64748b;"><strong>Doctor/Hospital:</strong> ${r.doctor}</p>` : ''}
+              ${r.hospital ? `<p style="font-size: 12px; color: #64748b;"><strong>Hospital:</strong> ${r.hospital}</p>` : ''}
               ${r.notes ? `<p style="font-style: italic; color: #475569; font-size: 12px; margin-top: 4px;">Note: ${r.notes}</p>` : ''}
             </div>
             <div class="report-actions">
@@ -1944,7 +1944,7 @@
         formData.append('name', document.getElementById('reportName').value);
         formData.append('type', document.getElementById('reportType').value);
         formData.append('date', document.getElementById('reportDate').value);
-        formData.append('doctor', document.getElementById('reportDoctor').value);
+        formData.append('hospital', document.getElementById('reportHospital').value);
         formData.append('notes', document.getElementById('reportNotes').value);
 
         const xhr = new XMLHttpRequest();

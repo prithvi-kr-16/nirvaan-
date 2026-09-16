@@ -43,38 +43,11 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 const User = mongoose.model('User', UserSchema);
 
-// Doctor
-const DoctorSchema = new mongoose.Schema({
-  // sourceId makes the supplied directory safe to import more than once.
-  sourceId: { type: String, index: true },
-  name: String,
-  specialty: String,
-  specialization: String,
-  qualification: String,
-  hospital: String,
-  clinicName: String,
-  clinicAddress: String,
-  location: String,
-  city: String,
-  experience: String,
-  rating: { type: Number, default: 4.5 },
-  fee: String,
-  availableDays: String,
-  availableTime: String,
-  availability: String,
-  photo: String,
-  image: String,
-  languages: String,
-  about: String,
-  phone: String,
-  email: String
-}, { timestamps: true });
-const Doctor = mongoose.model('Doctor', DoctorSchema);
-
 // Hospital
 const HospitalSchema = new mongoose.Schema({
   name: String, type: String, address: String, city: String, state: String,
   phone: String, email: String, departments: [String], beds: Number,
+  icuAvailable: { type: Number, default: 4 }, icuTotal: { type: Number, default: 12 },
   rating: { type: Number, default: 4.5 }, accredited: Boolean
 }, { timestamps: true });
 const Hospital = mongoose.model('Hospital', HospitalSchema);
@@ -82,7 +55,7 @@ const Hospital = mongoose.model('Hospital', HospitalSchema);
 // Appointment
 const AppointmentSchema = new mongoose.Schema({
   userEmail: { type: String, lowercase: true }, type: String,
-  doctorId: String, doctorName: String, hospitalName: String, department: String,
+  hospitalName: String, department: String,
   name: String, phone: String, date: String, timeSlot: String,
   status: { type: String, default: 'Confirmed' }
 }, { timestamps: true });
@@ -450,7 +423,7 @@ app.delete('/api/user/family/:familyMemberId/medical-history/:recordId', async (
 app.post('/api/user/family/:familyMemberId/reports', upload.single('pdf'), async (req, res) => {
   try {
     const { familyMemberId } = req.params;
-    const { email, name, type, date, doctor, notes } = req.body;
+    const { email, name, type, date, hospital, notes } = req.body;
 
     if (!email) {
       if (req.file) fs.unlinkSync(req.file.path);
@@ -468,7 +441,7 @@ app.post('/api/user/family/:familyMemberId/reports', upload.single('pdf'), async
     const newReport = {
       id: 'rep-' + Date.now(), name: name || req.file.originalname.replace('.pdf', ''),
       type: type || 'Other', date: date || new Date().toISOString().split('T')[0],
-      doctor: doctor || '', filename: req.file.filename, originalName: req.file.originalname,
+      hospital: hospital || '', filename: req.file.filename, originalName: req.file.originalname,
       size: (req.file.size / (1024 * 1024)).toFixed(1) + ' MB',
       uploadDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
       notes: notes || ''
@@ -534,50 +507,7 @@ app.delete('/api/user/family/:familyMemberId/reports/:reportId', async (req, res
   }
 });
 
-// ─── DOCTORS ──────────────────────────────────────────────────────────────────
-
-// Keep the public response compatible with both the original database fields
-// and the doctor-card fields used by the frontend.
-const formatDoctor = (doctor) => {
-  const data = doctor.toObject ? doctor.toObject() : doctor;
-  return {
-    ...data,
-    id: String(data._id || data.id),
-    specialty: data.specialty || data.specialization || 'General Medicine',
-    qualification: data.qualification || '',
-    clinicName: data.clinicName || data.hospital || data.location || '',
-    photo: data.photo || data.image || '',
-    availableDays: data.availableDays || data.availability || 'Please call to confirm',
-    availableTime: data.availableTime || 'Please call to confirm'
-  };
-};
-
-// 18. Get all doctors (with optional search)
-app.get('/api/doctors', async (req, res) => {
-  try {
-    const { search, city, specialization } = req.query;
-    const filters = [];
-    if (city) filters.push({ $or: [{ city: new RegExp(city, 'i') }, { location: new RegExp(city, 'i') }] });
-    if (specialization) filters.push({ $or: [{ specialty: new RegExp(specialization, 'i') }, { specialization: new RegExp(specialization, 'i') }] });
-    if (search) filters.push({
-      $or: [
-        { name: new RegExp(search, 'i') },
-        { specialty: new RegExp(search, 'i') },
-        { specialization: new RegExp(search, 'i') },
-        { hospital: new RegExp(search, 'i') },
-        { clinicName: new RegExp(search, 'i') }
-      ]
-    });
-    const query = filters.length ? { $and: filters } : {};
-
-    const doctors = await Doctor.find(query).sort({ rating: -1 });
-    res.status(200).json(doctors.map(formatDoctor));
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// 19. Book doctor appointment
+// 18. Book appointment
 app.post('/api/appointments', async (req, res) => {
   try {
     const appt = await Appointment.create(req.body);
@@ -589,15 +519,59 @@ app.post('/api/appointments', async (req, res) => {
 
 // ─── HOSPITALS ────────────────────────────────────────────────────────────────
 
-// 20. Get hospitals
+// 19. Get hospitals
 app.get('/api/hospitals', async (req, res) => {
   try {
     const { city, search } = req.query;
     const query = {};
     if (city) query.city = new RegExp(city, 'i');
     if (search) query.$or = [{ name: new RegExp(search, 'i') }, { city: new RegExp(search, 'i') }];
-    const hospitals = await Hospital.find(query).sort({ rating: -1 });
+    let hospitals = await Hospital.find(query).sort({ rating: -1 });
+
+    // Fall back to local confirmed Arwal hospitals if MongoDB is not yet seeded
+    if (!hospitals || hospitals.length === 0) {
+      try {
+        const hospFile = path.join(__dirname, 'data', 'hospitals.json');
+        if (fs.existsSync(hospFile)) {
+          const raw = JSON.parse(fs.readFileSync(hospFile, 'utf8'));
+          hospitals = Object.values(raw).filter(h => {
+            if (city && !new RegExp(city, 'i').test(h.city || '')) return false;
+            if (search && !new RegExp(search, 'i').test(h.name || '') && !new RegExp(search, 'i').test(h.city || '')) return false;
+            return true;
+          });
+        }
+      } catch (fileErr) {
+        console.warn('Could not read hospitals.json fallback:', fileErr.message);
+      }
+    }
+
     res.status(200).json(hospitals);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ─── BLOOD BANKS ──────────────────────────────────────────────────────────────
+
+// 20. Get blood bank stock
+app.get('/api/blood-banks', async (req, res) => {
+  try {
+    const bloodStock = {
+      'A+': 14,
+      'A-': 3,
+      'B+': 22,
+      'B-': 2,
+      'O+': 35,
+      'O-': 1,
+      'AB+': 8,
+      'AB-': 0
+    };
+    res.status(200).json({
+      bankName: 'NIRVAAN Central Blood Bank (Arwal)',
+      location: 'Opposite DM Residence, Arwal, Bihar 804401',
+      lastUpdated: new Date().toISOString(),
+      stock: bloodStock
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

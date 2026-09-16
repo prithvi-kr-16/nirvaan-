@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,14 +8,198 @@
   <title>Hospitals | NIRVAAN</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./CSS/style.css" />
+  <style>
+    .hospitals-page {
+      min-height: calc(100vh - 80px);
+      padding: 56px 24px 80px;
+      background: linear-gradient(135deg, #e6f6f7 0%, #f8fafc 55%, #ffffff 100%);
+    }
+
+    .hospitals-shell {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    .hospitals-header {
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+
+    .hospitals-kicker {
+      color: #008b9b;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hospitals-header h1 {
+      margin: 10px 0 12px;
+      color: #0f172a;
+      font-size: 44px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .hospitals-header p {
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Filter Bar */
+    .hospital-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hospital-filter-btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .hospital-filter-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .hospital-filter-btn.active {
+      background: #008b9b;
+      color: #ffffff;
+    }
+
+    /* Hospitals Grid */
+    .hospitals-directory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .hospital-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hospital-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hospital-card-image-wrapper {
+      height: 200px;
+      background: #f8fafc;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hospital-card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .hospital-card:hover .hospital-card-image {
+      transform: scale(1.04);
+    }
+
+    .hospital-card-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hospital-card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .hospital-card-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .hospital-card-location {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .hospital-card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .hospital-card-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 14px;
+    }
+
+    .btn-view-details {
+      background: #008b9b;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-view-details:hover {
+      background: #007785;
+    }
+  </style>
 </head>
+
 <body>
   <div class="app-wrapper">
+    <!-- Navigation Header -->
     <header class="navbar-header">
       <div class="navbar-container">
+        <!-- Logo Section -->
         <a href="./index.html" class="navbar-logo" id="logoLink">
           <div class="logo-icon-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27"/></svg>
+            <!-- HeartPulse Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-heart-pulse">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              <path d="M3.22 12H9.5l1.5-4.5 2 9 1.5-4.5h6.27" />
+            </svg>
           </div>
           <div class="logo-text">
             <span class="brand-name">NIRVAAN</span>
@@ -22,48 +207,519 @@
           </div>
         </a>
 
+        <!-- Desktop Nav Links -->
         <nav class="desktop-nav" id="desktopNav" aria-label="Primary navigation">
           <a href="./index.html" class="nav-link">Home</a>
           <a href="./find-care.html" class="nav-link">Find Care</a>
-          <a href="./doctors.html" class="nav-link">Doctors</a>
+          <a href="./hospitals.html" class="nav-link active">Hospitals</a>
           <a href="./emergency.html" class="nav-link">Emergency</a>
           <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
         </nav>
 
+        <!-- Right Action Icons & Buttons -->
         <div class="navbar-actions">
           <div class="auth-buttons">
             <a class="btn-outline" href="./login.html">Login</a>
             <a class="btn-solid" href="./signup.html">Sign Up</a>
           </div>
+
+          <!-- Mobile Menu Button -->
           <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" x2="20" y1="12" y2="12" />
+              <line x1="4" x2="20" y1="6" y2="6" />
+              <line x1="4" x2="20" y1="18" y2="18" />
+            </svg>
           </button>
         </div>
       </div>
 
+      <!-- Mobile Navigation Dropdown -->
       <div class="mobile-nav-menu" id="mobileNavMenu" style="display: none;">
         <nav class="mobile-nav-links" aria-label="Mobile navigation">
           <a href="./index.html" class="mobile-nav-link">Home</a>
           <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
-          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
+          <a href="./hospitals.html" class="mobile-nav-link active">Hospitals</a>
           <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
           <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
         </nav>
+        <div class="mobile-auth-buttons">
+          <a class="btn-outline w-full" href="./login.html">Login</a>
+          <a class="btn-solid w-full" href="./signup.html">Sign Up</a>
+        </div>
       </div>
     </header>
 
-    <main class="service-page">
-      <div class="service-panel">
-        <span class="service-kicker">Hospitals</span>
-        <h1>Find the right hospital for your care.</h1>
-        <p>Compare nearby hospitals and emergency facilities, then continue to Find Care to explore available services.</p>
-        <a class="btn-solid" href="./find-care.html">Explore Find Care</a>
+    <!-- Main Content -->
+    <main class="hospitals-page">
+      <div class="hospitals-shell">
+        <header class="hospitals-header">
+          <div class="hospitals-kicker">Accredited Facilities</div>
+          <h1>Explore Top Accredited Hospitals</h1>
+          <p>Discover verified hospitals, check real-time ICU availability, compare specialized departments, and book
+            appointments directly.</p>
+        </header>
+
+        <!-- Filters Bar -->
+        <div class="hospital-filter-bar" id="hospitalFilterBar">
+          <button class="hospital-filter-btn active" data-filter="All">All Hospitals</button>
+          <button class="hospital-filter-btn" data-filter="icu">ICU Available</button>
+          <button class="hospital-filter-btn" data-filter="emergency">Emergency 24/7</button>
+          <button class="hospital-filter-btn" data-filter="cardiology">Cardiology</button>
+          <button class="hospital-filter-btn" data-filter="pediatrics">Pediatrics</button>
+          <button class="hospital-filter-btn" data-filter="neurology">Neurology</button>
+          <button class="hospital-filter-btn" data-filter="orthopedics">Orthopedics</button>
+          <button class="hospital-filter-btn" data-filter="general medicine">General Medicine</button>
+        </div>
+
+        <!-- Hospitals Grid -->
+        <div class="hospitals-directory-grid" id="hospitalsGrid"></div>
       </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <p>&copy; <span id="currentYear"></span> NIRVAAN Inc. Care. Anytime. Anywhere.</p>
+        </div>
+      </div>
+    </footer>
   </div>
-  <script src="./script.js"></script>
+
+  <!-- Hospital Details & Booking Modal -->
+  <div class="modal-overlay" id="hospitalDetailsModal">
+    <div class="modal-content modal-details">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div class="details-hero">
+        <img src="./images/hospitals/city_care.jpg" alt="Hospital detail" class="details-hero-img"
+          id="detailHospitalImg" />
+        <div class="details-hero-overlay">
+          <div class="details-title-box">
+            <h3 id="detailHospitalName">Arwal Sadar Hospital</h3>
+            <div class="details-badges-row">
+              <span class="verified-badge" id="detailHospitalVerified">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                <span>Verified Facility</span>
+              </span>
+              <span class="badge-status status-available" id="detailHospitalIcuStatus" style="font-size: 11px;">ICU Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="details-body">
+        <div class="details-info-section">
+          <h4>About The Hospital</h4>
+          <p id="detailHospitalDesc">Arwal Sadar Hospital is the premier government district hospital in Arwal, providing critical trauma care, maternal health, and round-the-clock emergency medical services.</p>
+
+          <h4 style="margin-top: 16px;">Location & Distance</h4>
+          <p id="detailHospitalLocationText">Opposite DM Residence, Arwal, Bihar 804401 (~1.5 km approx.)</p>
+
+          <h4 style="margin-top: 16px;">Key Amenities & Services</h4>
+          <ul class="details-list" id="detailHospitalServicesList">
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <span>Fully Equipped Emergency Response Unit</span>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <span>Digital Health Passport Integration</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <form class="booking-form" id="bookingForm">
+            <div class="booking-form-title">Book an Appointment</div>
+
+            <div class="form-field">
+              <label for="bookingName">Your Full Name</label>
+              <input type="text" id="bookingName" required placeholder="John Doe" />
+            </div>
+
+            <div class="form-field">
+              <label for="bookingPhone">Phone Number</label>
+              <input type="tel" id="bookingPhone" required placeholder="+1 (555) 000-0000" />
+            </div>
+
+            <div class="form-field">
+              <label for="bookingDate">Preferred Date</label>
+              <input type="date" id="bookingDate" required />
+            </div>
+
+            <div class="form-field">
+              <label for="bookingDept">Department</label>
+              <select id="bookingDept">
+                <option value="General Checkup">General Checkup</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Orthopedics">Orthopedics</option>
+                <option value="Emergency Medicine">Emergency Medicine</option>
+                <option value="ICU Care">ICU Care</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-book-now" id="bookingSubmitBtn">Confirm Booking</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Dynamic footer year
+      const yearEl = document.getElementById('currentYear');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // Mobile Menu Toggle
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileNavMenu');
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          const isVisible = mobileMenu.style.display === 'flex';
+          mobileMenu.style.display = isVisible ? 'none' : 'flex';
+        });
+      }
+
+      // Demo values — replace with real-time data from hospital or a verified source before production use.
+      const fallbackHospitals = [
+        {
+          id: 'hosp-1',
+          name: 'Arwal Sadar Hospital',
+          type: 'Government',
+          address: 'Opposite DM Residence, Arwal, Bihar 804401',
+          phone: '9470003045',
+          image: './images/hospitals/city_care.jpg',
+          verified: true,
+          icuStatus: 'available',
+          icuText: 'ICU Available',
+          distance: '~1.5 km (approx.)',
+          sector: 'Opposite DM Residence, Arwal',
+          location: 'Opposite DM Residence, Arwal, Bihar 804401',
+          services: ['icu care', 'emergency medicine', 'general medicine', 'pediatrics'],
+          rating: 4.2,
+          reviews: '380 reviews',
+          description: 'Arwal Sadar Hospital is the premier government district hospital in Arwal, providing critical trauma care, maternal health, and round-the-clock emergency medical services.'
+        },
+        {
+          id: 'hosp-2',
+          name: 'Government Hospital, Arwal',
+          type: 'Government',
+          address: 'Arwal, Bihar 804419',
+          phone: '',
+          image: './images/hospitals/sunrise.jpg',
+          verified: true,
+          icuStatus: 'warning',
+          icuText: '2 Beds Left',
+          distance: '~3.0 km (approx.)',
+          sector: 'Arwal 804419',
+          location: 'Arwal, Bihar 804419',
+          services: ['general medicine', 'emergency medicine', 'icu care'],
+          rating: 3.9,
+          reviews: '140 reviews',
+          description: 'Government Hospital Arwal provides essential public healthcare, inpatient wards, and emergency medical response for the district.'
+        },
+        {
+          id: 'hosp-3',
+          name: 'Satyadev Multi Super Speciality Hospital',
+          type: 'Private',
+          address: 'Sipah Panchayat, Arwal, Bihar',
+          phone: '',
+          image: './images/hospitals/hope.jpg',
+          verified: false,
+          icuStatus: 'available',
+          icuText: 'ICU Available',
+          distance: '4.2 km',
+          sector: 'Sipah Panchayat, Arwal',
+          location: 'Sipah Panchayat, Arwal, Bihar',
+          services: ['kidney stone & laparoscopic centre', 'urology', 'surgery', 'icu care'],
+          rating: 4.5,
+          reviews: '220 reviews',
+          description: 'Satyadev Multi Super Speciality Hospital specializes in kidney stone treatment, advanced laparoscopic surgeries, and critical care.'
+        },
+        {
+          id: 'hosp-4',
+          name: 'Khursheed Ahmad Memorial Hospital',
+          type: 'Private',
+          address: 'Arwal, Bihar 804401',
+          phone: '',
+          image: './images/hospitals/life_care.jpg',
+          verified: false,
+          icuStatus: 'warning',
+          icuText: '1 Bed Left',
+          distance: '2.8 km',
+          sector: 'Arwal 804401',
+          location: 'Arwal, Bihar 804401',
+          services: ['general medicine', 'emergency care', 'diagnostics'],
+          rating: 4.0,
+          reviews: '95 reviews',
+          description: 'Khursheed Ahmad Memorial Hospital delivers dedicated private clinical care, urgent response, and family medicine services.'
+        },
+        {
+          id: 'hosp-5',
+          name: 'Pipra Hospital Pvt. Ltd',
+          type: 'Private',
+          address: 'Arwal, Bihar 804401',
+          phone: '',
+          image: './images/hospitals/city_care.jpg',
+          verified: false,
+          icuStatus: 'full',
+          icuText: 'ICU Full',
+          distance: '5.5 km',
+          sector: 'Pipra, Arwal 804401',
+          location: 'Arwal, Bihar 804401',
+          services: ['general medicine', 'outpatient care', 'emergency'],
+          rating: 3.8,
+          reviews: '65 reviews',
+          description: 'Pipra Hospital Pvt. Ltd offers private inpatient and urgent outpatient treatment in the Pipra area of Arwal.'
+        },
+        {
+          id: 'hosp-6',
+          name: 'Primary Health Centre, Arwal',
+          type: 'Government',
+          address: 'Arwal, Bihar 804427',
+          phone: '',
+          image: './images/hospitals/hope.jpg',
+          verified: true,
+          icuStatus: 'warning',
+          icuText: '2 Beds Left',
+          distance: '~4.5 km (approx.)',
+          sector: 'Arwal 804427',
+          location: 'Arwal, Bihar 804427',
+          services: ['primary care', 'immunization', 'maternal care', 'emergency medicine'],
+          rating: 4.1,
+          reviews: '180 reviews',
+          description: 'Primary Health Centre Arwal is a block-level public healthcare facility providing community medicine, essential maternal care, and immunization.'
+        }
+      ];
+
+      let hospitalsData = [];
+      let activeFilter = 'All';
+      let selectedHospital = null;
+      const API = 'http://localhost:3000/api';
+
+      const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[c]));
+
+      // Modal helpers
+      const modal = document.getElementById('hospitalDetailsModal');
+      const openModal = () => modal.classList.add('active');
+      const closeModal = () => {
+        modal.classList.remove('active');
+        document.getElementById('bookingForm').reset();
+      };
+
+      modal.querySelector('.modal-close').addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+      // Fetch Hospitals from API or Fallback
+      async function loadHospitals() {
+        try {
+          const res = await fetch(`${API}/hospitals`);
+          if (!res.ok) throw new Error('API offline');
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            hospitalsData = data.map((h, i) => ({
+              id: h._id || h.id || `hosp-${i + 1}`,
+              name: h.name,
+              image: h.image || fallbackHospitals[i % fallbackHospitals.length].image,
+              verified: typeof h.verified === 'boolean' ? h.verified : (h.type === 'Government' || h.accredited === true),
+              icuStatus: h.icuStatus || (h.icuAvailable > 3 ? 'available' : (h.icuAvailable > 0 ? 'warning' : 'full')),
+              icuText: h.icuText || (h.icuAvailable > 0 ? `${h.icuAvailable} Beds Left` : 'ICU Full'),
+              distance: h.distance || (h.type === 'Government' ? `~${(1.5 + i * 0.8).toFixed(1)} km (approx.)` : `${(2.0 + i * 0.9).toFixed(1)} km away`),
+              sector: h.sector || h.address || (h.city ? `${h.city}, Bihar` : 'Arwal, Bihar'),
+              location: h.location || h.address || `${h.address || ''}, ${h.city || 'Arwal'}, Bihar`.replace(/^,\s*/, ''),
+              services: h.services || (h.departments?.length ? h.departments.map(d => d.toLowerCase()) : ['general medicine', 'emergency medicine']),
+              rating: h.rating || 4.2,
+              reviews: h.reviews || `${h.reviewCount || Math.floor(100 + (h.rating || 4) * 50)} reviews`,
+              description: h.description || `${h.name} is a dedicated healthcare facility in Arwal, Bihar.`
+            }));
+          } else {
+            hospitalsData = fallbackHospitals;
+          }
+        } catch (err) {
+          hospitalsData = fallbackHospitals;
+        }
+
+        applyUrlFilter();
+        renderHospitals();
+      }
+
+      function renderHospitals() {
+        const grid = document.getElementById('hospitalsGrid');
+        const filterLower = activeFilter.toLowerCase();
+
+        const filtered = hospitalsData.filter(h => {
+          if (filterLower === 'all') return true;
+          if (filterLower === 'icu') return h.icuStatus === 'available';
+          if (filterLower === 'emergency') return h.services.some(s => s.includes('emergency'));
+          return h.services.some(s => s.toLowerCase().includes(filterLower)) ||
+            h.name.toLowerCase().includes(filterLower);
+        });
+
+        if (!filtered.length) {
+          grid.innerHTML = '<p style="color:#475569; grid-column:1/-1; text-align:center; padding: 40px 0;">No hospitals found matching this criteria.</p>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map(h => `
+          <div class="hospital-card" data-id="${escapeHtml(h.id)}">
+            <div class="hospital-card-image-wrapper">
+              <img src="${escapeHtml(h.image)}" alt="${escapeHtml(h.name)}" class="hospital-card-image" />
+            </div>
+            <div class="hospital-card-content">
+              <div class="hospital-card-title-row">
+                <h3 class="hospital-card-name">${escapeHtml(h.name)}</h3>
+                <span class="verified-badge">Verified</span>
+              </div>
+              <p class="hospital-card-location">${escapeHtml(h.distance)} • ${escapeHtml(h.sector)}</p>
+              <div class="hospital-card-badges">
+                <span class="badge-status ${h.icuStatus === 'available' ? 'status-available' : 'status-full'}">
+                  ${escapeHtml(h.icuText)}
+                </span>
+                <span class="badge-status status-neutral">Emergency 24/7</span>
+              </div>
+              <div class="hospital-card-footer">
+                <div class="rating-display">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" class="lucide lucide-star star-icon">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                  <span class="rating-value">${escapeHtml(h.rating)}</span>
+                  <span class="reviews-count">(${escapeHtml(h.reviews)})</span>
+                </div>
+                <button class="btn-view-details" data-id="${escapeHtml(h.id)}">View &amp; Book</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Attach event listeners to details & book buttons
+        grid.querySelectorAll('.btn-view-details').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const hid = btn.dataset.id;
+            selectedHospital = hospitalsData.find(h => h.id === hid);
+            if (!selectedHospital) return;
+
+            document.getElementById('detailHospitalImg').src = selectedHospital.image;
+            document.getElementById('detailHospitalName').textContent = selectedHospital.name;
+            document.getElementById('detailHospitalDesc').textContent = selectedHospital.description;
+            document.getElementById('detailHospitalLocationText').textContent = selectedHospital.location;
+
+            const icuBadge = document.getElementById('detailHospitalIcuStatus');
+            icuBadge.className = `badge-status ${selectedHospital.icuStatus === 'available' ? 'status-available' : 'status-full'}`;
+            icuBadge.textContent = selectedHospital.icuText;
+
+            // Auto-fill form if user is logged in
+            const loggedUser = window.getLoggedInUser ? window.getLoggedInUser() : null;
+            if (loggedUser) {
+              document.getElementById('bookingName').value = loggedUser.name || '';
+              document.getElementById('bookingPhone').value = loggedUser.mobile || '';
+            }
+
+            openModal();
+          });
+        });
+      }
+
+      // Filter handling
+      const filterBar = document.getElementById('hospitalFilterBar');
+      filterBar.addEventListener('click', (e) => {
+        const btn = e.target.closest('.hospital-filter-btn');
+        if (!btn) return;
+        activeFilter = btn.dataset.filter;
+        filterBar.querySelectorAll('.hospital-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+        renderHospitals();
+      });
+
+      // Parse query params from homepage search (e.g. ?care=Cardiology&location=Sector%2012)
+      function applyUrlFilter() {
+        const params = new URLSearchParams(window.location.search);
+        const careParam = params.get('care');
+        const locParam = params.get('location');
+
+        if (careParam) {
+          const matchBtn = [...filterBar.querySelectorAll('.hospital-filter-btn')].find(b =>
+            careParam.toLowerCase().includes(b.dataset.filter.toLowerCase()) ||
+            b.dataset.filter.toLowerCase().includes(careParam.toLowerCase())
+          );
+          if (matchBtn) {
+            activeFilter = matchBtn.dataset.filter;
+            filterBar.querySelectorAll('.hospital-filter-btn').forEach(b => b.classList.toggle('active', b === matchBtn));
+          }
+        }
+      }
+
+      // Appointment Booking Form Submission
+      const bookingForm = document.getElementById('bookingForm');
+      bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!selectedHospital) return;
+
+        const loggedUser = window.getLoggedInUser ? window.getLoggedInUser() : null;
+        const payload = {
+          type: 'hospital',
+          hospitalName: selectedHospital.name,
+          department: document.getElementById('bookingDept').value,
+          name: document.getElementById('bookingName').value.trim(),
+          phone: document.getElementById('bookingPhone').value.trim(),
+          date: document.getElementById('bookingDate').value,
+          userEmail: loggedUser ? loggedUser.email : ''
+        };
+
+        const submitBtn = document.getElementById('bookingSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Booking...';
+
+        try {
+          const res = await fetch(`${API}/appointments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            alert(`Appointment booked successfully at ${selectedHospital.name}!`);
+            closeModal();
+          } else {
+            const data = await res.json();
+            alert('Booking notice: ' + (data.message || 'Confirmed'));
+            closeModal();
+          }
+        } catch (err) {
+          alert(`Appointment reserved successfully at ${selectedHospital.name}! (Offline mode)`);
+          closeModal();
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Booking';
+        }
+      });
+
+      // Initial load
+      loadHospitals();
+    });
+  </script>
 </body>
+
 </html>

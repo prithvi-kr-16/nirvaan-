@@ -4,7 +4,7 @@
 .hero-section {
   position: relative;
   min-height: 580px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 45%, rgba(255, 255, 255, 0.3) 100%), url('./images/2pmch.jpeg') center right/cover no-repeat;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 45%, rgba(255, 255, 255, 0.3) 100%), url('../images/hero_background.jpg') center right/cover no-repeat;
   display: flex;
   align-items: center;
   padding: 60px 0 100px 0; /* Extra bottom padding for Service Bar overlap */

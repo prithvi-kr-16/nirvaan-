@@ -1,9 +1,9 @@
 [
   {
     "id": "appt-1787344571256",
-    "type": "doctor",
-    "doctorId": "doc-1",
-    "doctorName": "Dr. Sarah Alston",
+    "type": "hospital",
+    "hospitalName": "Arwal Sadar Hospital",
+    "department": "Emergency Medicine",
     "name": "Test Patient",
     "phone": "9876543210",
     "email": "testpatient@gmail.com",

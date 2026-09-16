@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -278,8 +278,8 @@
         <nav class="desktop-nav" id="desktopNav">
           <a href="./index.html" class="nav-link">Home</a>
           <a href="./find-care.html" class="nav-link">Find Care</a>
-          <a href="./doctors.html" class="nav-link">Doctors</a>
-          <a href="./emergency.html" class="nav-link">Emergency</a>
+          <a href="./hospitals.html" class="nav-link">Hospitals</a>
+          <a href="./emergency.html" class="nav-link active">Emergency</a>
           <a href="./pharmacy.html" class="nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="nav-link">Diagnostics</a>
         </nav>
@@ -296,8 +296,8 @@
         <nav class="mobile-nav-links">
           <a href="./index.html" class="mobile-nav-link">Home</a>
           <a href="./find-care.html" class="mobile-nav-link">Find Care</a>
-          <a href="./doctors.html" class="mobile-nav-link">Doctors</a>
-          <a href="./emergency.html" class="mobile-nav-link">Emergency</a>
+          <a href="./hospitals.html" class="mobile-nav-link">Hospitals</a>
+          <a href="./emergency.html" class="mobile-nav-link active">Emergency</a>
           <a href="./pharmacy.html" class="mobile-nav-link">Pharmacy</a>
           <a href="./diagnostics.html" class="mobile-nav-link">Diagnostics</a>
         </nav>
@@ -409,11 +409,14 @@
           renderIcuBoard();
         } catch (err) {
           console.error(err);
-          // Fallback static list
+          // Demo values — replace with real-time data from hospital or a verified source before production use.
           hospitalsData = {
-            'hosp-1': { name: 'City Care Hospital', icuStatus: 'available', icuText: 'ICU Available', distance: '2.4 km away', sector: 'Sector 12' },
-            'hosp-2': { name: 'Sunrise Hospital', icuStatus: 'full', icuText: 'ICU Full', distance: '3.1 km away', sector: 'Sector 8' },
-            'hosp-3': { name: 'Hope Multi-Speciality', icuStatus: 'available', icuText: 'ICU Available', distance: '4.2 km away', sector: 'Sector 21' }
+            'hosp-1': { name: 'Arwal Sadar Hospital', icuStatus: 'available', icuText: 'ICU Available', distance: '~1.5 km (approx.)', sector: 'Opposite DM Residence, Arwal' },
+            'hosp-2': { name: 'Government Hospital, Arwal', icuStatus: 'available', icuText: '2 Beds Left', distance: '~3.0 km (approx.)', sector: 'Arwal 804419' },
+            'hosp-3': { name: 'Satyadev Multi Super Speciality Hospital', icuStatus: 'available', icuText: 'ICU Available', distance: '4.2 km', sector: 'Sipah Panchayat, Arwal' },
+            'hosp-4': { name: 'Khursheed Ahmad Memorial Hospital', icuStatus: 'available', icuText: '1 Bed Left', distance: '2.8 km', sector: 'Arwal 804401' },
+            'hosp-5': { name: 'Pipra Hospital Pvt. Ltd', icuStatus: 'full', icuText: 'ICU Full', distance: '5.5 km', sector: 'Pipra, Arwal' },
+            'hosp-6': { name: 'Primary Health Centre, Arwal', icuStatus: 'available', icuText: '2 Beds Left', distance: '~4.5 km (approx.)', sector: 'Arwal 804427' }
           };
           renderIcuBoard();
         }
@@ -421,16 +424,20 @@
 
       function renderIcuBoard() {
         const board = document.getElementById('icuHospitalList');
-        board.innerHTML = Object.values(hospitalsData).map(h => {
-          const statusClass = h.icuStatus === 'available' ? 'status-available' : 'status-full';
+        const list = Array.isArray(hospitalsData) ? hospitalsData : Object.values(hospitalsData);
+        board.innerHTML = list.map(h => {
+          const statusClass = (h.icuStatus === 'available' || (h.icuAvailable > 0)) ? 'status-available' : 'status-full';
+          const loc = h.sector || h.address || 'Arwal, Bihar';
+          const dist = h.distance || '~2.0 km (approx.)';
+          const text = h.icuText || (h.icuAvailable > 0 ? `${h.icuAvailable} Beds Left` : (h.icuStatus === 'full' ? 'ICU Full' : 'ICU Available'));
           return `
             <div class="icu-hospital-item">
               <div class="hosp-info">
                 <h4>${h.name}</h4>
-                <p>📍 Sector: ${h.sector} • ${h.distance}</p>
+                <p>📍 ${loc} • ${dist}</p>
               </div>
               <div>
-                <span class="badge-status ${statusClass}">${h.icuText}</span>
+                <span class="badge-status ${statusClass}">${text}</span>
               </div>
             </div>
           `;

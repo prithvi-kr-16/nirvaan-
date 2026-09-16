@@ -44,19 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 3. FIND CARE SEARCH CARD TABS (HOSPITALS VS DOCTORS)
+  // 3. FIND CARE SEARCH CARD TABS
   // ==========================================================================
   const tabHospitals = document.getElementById('tabHospitals');
-  const tabDoctors   = document.getElementById('tabDoctors');
-
-  if (tabHospitals && tabDoctors) {
+  if (tabHospitals) {
     tabHospitals.addEventListener('click', () => {
-      tabHospitals.classList.add('active');    tabHospitals.setAttribute('aria-selected', 'true');
-      tabDoctors.classList.remove('active');  tabDoctors.setAttribute('aria-selected', 'false');
-    });
-    tabDoctors.addEventListener('click', () => {
-      tabDoctors.classList.add('active');      tabDoctors.setAttribute('aria-selected', 'true');
-      tabHospitals.classList.remove('active'); tabHospitals.setAttribute('aria-selected', 'false');
+      tabHospitals.classList.add('active');
+      tabHospitals.setAttribute('aria-selected', 'true');
     });
   }
 
@@ -137,17 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Build query and redirect to hospitals or doctors page
-    const activeTab = document.querySelector('.search-tab.active')?.textContent.trim() || 'Hospitals';
+    // Build query and redirect to hospitals page
     const params = new URLSearchParams();
     if (loc) params.set('location', loc);
     if (isCareSelected) params.set('care', care);
 
-    if (activeTab === 'Doctors') {
-      window.location.href = `./doctors.html?${params.toString()}`;
-    } else {
-      window.location.href = `./hospitals.html?${params.toString()}`;
-    }
+    window.location.href = `./hospitals.html?${params.toString()}`;
   }
 
   if (searchSubmitBtn) searchSubmitBtn.addEventListener('click', handleSearch);
@@ -158,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   const serviceCardLinks = {
     hospitals:       './hospitals.html',
-    doctors:         './doctors.html',
     emergency:       './emergency.html',
     pharmacy:        './pharmacy.html',
     diagnostics:     './diagnostics.html',
@@ -201,12 +189,104 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') modals.forEach(m => { if (m?.classList.contains('active')) closeModal(m); });
   });
 
-  // Hospital static data (fallback) — also used for search filtering
+  // Demo values — replace with real-time data from hospital or a verified source before production use.
   const hospitalStaticDB = {
-    'hosp-1': { name: 'City Care Hospital', image: './images/hospitals/city_care.jpg', verified: true, icuStatus: 'available', icuText: 'ICU Available', distance: '2.4 km away', sector: 'Sector 12', location: 'Sector 12, Medical Plaza, Metro City', services: ['icu care', 'cardiology', 'emergency medicine'], description: 'City Care Hospital is a premier multi-specialty institution known for excellence in emergency medicine and cardiology. Featuring advanced critical care monitoring, responsive ICU chambers, and highly trained physicians available around the clock.' },
-    'hosp-2': { name: 'Sunrise Hospital', image: './images/hospitals/sunrise.jpg', verified: true, icuStatus: 'full', icuText: 'ICU Full', distance: '3.1 km away', sector: 'Sector 8', location: 'Sector 8, Sunrise Blvd, Metro City', services: ['pediatrics', 'general medicine', 'emergency medicine'], description: 'Sunrise Hospital offers top-tier pediatric and general surgery services with specialized emergency care teams. ICU is at full capacity but urgent care and outpatient units remain fully operational.' },
-    'hosp-3': { name: 'Hope Multi-Speciality', image: './images/hospitals/hope.jpg', verified: true, icuStatus: 'available', icuText: 'ICU Available', distance: '4.2 km away', sector: 'Sector 21', location: 'Sector 21, Ring Road, Metro City', services: ['neurology', 'orthopedics', 'diagnostics'], description: 'Hope Multi-Speciality Hospital excels in neurology and orthopedics diagnostics. Features modern private suites, a state-of-the-art diagnostic imaging center, and an automated pharmacy hub connected directly to regional paramedics.' },
-    'hosp-4': { name: 'Life Care Hospital', image: './images/hospitals/life_care.jpg', verified: true, icuStatus: 'available', icuText: 'ICU Available', distance: '5.3 km away', sector: 'Sector 15', location: 'Sector 15, Green Park Avenue, Metro City', services: ['general medicine', 'emergency medicine', 'diagnostics'], description: 'Life Care Hospital provides general internal medicine services, wellness testing, and critical trauma management. Known for short wait times in emergency registration.' }
+    'hosp-1': {
+      id: 'hosp-1',
+      name: 'Arwal Sadar Hospital',
+      type: 'Government',
+      address: 'Opposite DM Residence, Arwal, Bihar 804401',
+      phone: '9470003045',
+      image: './images/hospitals/city_care.jpg',
+      verified: true,
+      icuStatus: 'available',
+      icuText: 'ICU Available',
+      distance: '~1.5 km (approx.)',
+      sector: 'Opposite DM Residence, Arwal',
+      location: 'Opposite DM Residence, Arwal, Bihar 804401',
+      services: ['icu care', 'emergency medicine', 'general medicine', 'pediatrics'],
+      description: 'Arwal Sadar Hospital is the premier government district hospital in Arwal, providing critical trauma care, maternal health, and round-the-clock emergency medical services.'
+    },
+    'hosp-2': {
+      id: 'hosp-2',
+      name: 'Government Hospital, Arwal',
+      type: 'Government',
+      address: 'Arwal, Bihar 804419',
+      phone: '',
+      image: './images/hospitals/sunrise.jpg',
+      verified: true,
+      icuStatus: 'warning',
+      icuText: '2 Beds Left',
+      distance: '~3.0 km (approx.)',
+      sector: 'Arwal 804419',
+      location: 'Arwal, Bihar 804419',
+      services: ['general medicine', 'emergency medicine', 'icu care'],
+      description: 'Government Hospital Arwal provides essential public healthcare, inpatient wards, and emergency medical response for the district.'
+    },
+    'hosp-3': {
+      id: 'hosp-3',
+      name: 'Satyadev Multi Super Speciality Hospital',
+      type: 'Private',
+      address: 'Sipah Panchayat, Arwal, Bihar',
+      phone: '',
+      image: './images/hospitals/hope.jpg',
+      verified: false,
+      icuStatus: 'available',
+      icuText: 'ICU Available',
+      distance: '4.2 km',
+      sector: 'Sipah Panchayat, Arwal',
+      location: 'Sipah Panchayat, Arwal, Bihar',
+      services: ['kidney stone & laparoscopic centre', 'urology', 'surgery', 'icu care'],
+      description: 'Satyadev Multi Super Speciality Hospital specializes in kidney stone treatment, advanced laparoscopic surgeries, and critical care.'
+    },
+    'hosp-4': {
+      id: 'hosp-4',
+      name: 'Khursheed Ahmad Memorial Hospital',
+      type: 'Private',
+      address: 'Arwal, Bihar 804401',
+      phone: '',
+      image: './images/hospitals/life_care.jpg',
+      verified: false,
+      icuStatus: 'warning',
+      icuText: '1 Bed Left',
+      distance: '2.8 km',
+      sector: 'Arwal 804401',
+      location: 'Arwal, Bihar 804401',
+      services: ['general medicine', 'emergency care', 'diagnostics'],
+      description: 'Khursheed Ahmad Memorial Hospital delivers dedicated private clinical care, urgent response, and family medicine services.'
+    },
+    'hosp-5': {
+      id: 'hosp-5',
+      name: 'Pipra Hospital Pvt. Ltd',
+      type: 'Private',
+      address: 'Arwal, Bihar 804401',
+      phone: '',
+      image: './images/hospitals/city_care.jpg',
+      verified: false,
+      icuStatus: 'full',
+      icuText: 'ICU Full',
+      distance: '5.5 km',
+      sector: 'Pipra, Arwal 804401',
+      location: 'Arwal, Bihar 804401',
+      services: ['general medicine', 'outpatient care', 'emergency'],
+      description: 'Pipra Hospital Pvt. Ltd offers private inpatient and urgent outpatient treatment in the Pipra area of Arwal.'
+    },
+    'hosp-6': {
+      id: 'hosp-6',
+      name: 'Primary Health Centre, Arwal',
+      type: 'Government',
+      address: 'Arwal, Bihar 804427',
+      phone: '',
+      image: './images/hospitals/hope.jpg',
+      verified: true,
+      icuStatus: 'warning',
+      icuText: '2 Beds Left',
+      distance: '~4.5 km (approx.)',
+      sector: 'Arwal 804427',
+      location: 'Arwal, Bihar 804427',
+      services: ['primary care', 'immunization', 'maternal care', 'emergency medicine'],
+      description: 'Primary Health Centre Arwal is a block-level public healthcare facility providing community medicine, essential maternal care, and immunization.'
+    }
   };
 
   // Hospital View Details
@@ -361,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const notificationBtn = document.getElementById('notificationBtn');
   if (notificationBtn) {
     notificationBtn.addEventListener('click', () => {
-      alert('Notifications:\n1. Ambulance dispatch confirmed in Sector 12.\n2. Doctor referral response from Sunrise Hospital.\n3. Your health profile is ready to update.');
+      alert('Notifications:\n1. Ambulance dispatch confirmed in Arwal Sadar Hospital.\n2. Hospital admission response from Government Hospital, Arwal.\n3. Your health profile is ready to update.');
     });
   }
 

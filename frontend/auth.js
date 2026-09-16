@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const draft = { account: {}, role: '', profile: {} };
   let resetOtp = '';
   let lastTrigger = null;
@@ -83,7 +83,7 @@
     '<p class="auth-page-switch">Already have an account? <button type="button" class="auth-switch-button" data-auth-switch="login">Login</button></p>',
     '<p class="auth-page-switch" style="margin-top: 6px;"><button type="button" class="auth-switch-button" data-auth-switch="role" style="color: #64748b; text-decoration: none;">Register as Professional</button></p></section>',
     '<section data-auth-view="role" hidden><div class="auth-page-header"><h1>Select Account Type</h1><p>Register as a service provider</p></div>',
-    '<div class="auth-role-grid"><button type="button" class="auth-role-card" data-role="doctor"><strong>Doctor</strong><span>Professional listings.</span></button><button type="button" class="auth-role-card" data-role="hospital"><strong>Hospital</strong><span>NIRVAAN facilities listings.</span></button><button type="button" class="auth-role-card" data-role="blood-bank"><strong>Blood Bank</strong><span>Donation bank listings.</span></button></div>',
+    '<div class="auth-role-grid"><button type="button" class="auth-role-card" data-role="hospital"><strong>Hospital</strong><span>NIRVAAN facilities listings.</span></button><button type="button" class="auth-role-card" data-role="blood-bank"><strong>Blood Bank</strong><span>Donation bank listings.</span></button></div>',
     '<p id="roleStatus" class="auth-status" role="status" aria-live="polite"></p><button type="button" class="auth-text-button auth-back-button" data-auth-switch="signup">Back to patient signup</button></section>',
     '<section data-auth-view="profile" hidden><div class="auth-page-header"><h1 id="profileHeading">Complete profile</h1><p id="profileSubtitle">Provide registration details.</p></div><div id="profileFormHost"></div></section>',
     '<section data-auth-view="complete" hidden><div class="auth-complete"><span class="auth-complete-mark">Done</span><h1 id="completeHeading">Account verified!</h1><p id="completeMessage">You can now use NIRVAAN.</p><button type="button" class="auth-btn-solid" data-auth-close>Continue</button></div></section>',
@@ -92,7 +92,6 @@
 
   const profileFields = {
     patient: [['Full Name', 'name', 'text', true], ['Date of Birth', 'dob', 'date', true], ['Gender', 'gender', 'select:Female|Male|Non-binary|Prefer not to say', true], ['Mobile Number', 'mobile', 'tel', true], ['Email', 'email', 'email', true], ['Blood Group', 'bloodGroup', 'select:A+|A-|B+|B-|AB+|AB-|O+|O-|Unknown', false], ['Address', 'address', 'textarea', false], ['City', 'city', 'text', true], ['State', 'state', 'text', true], ['Emergency Contact', 'emergencyContact', 'tel', false], ['Profile Photo', 'photo', 'file', false]],
-    doctor: [['Full Name', 'name', 'text', true], ['Profile Photo', 'photo', 'file', false], ['Mobile Number', 'mobile', 'tel', true], ['Email', 'email', 'email', true], ['Medical Registration Number', 'registrationNumber', 'text', true], ['Medical Council / Authority', 'council', 'text', true], ['Specialization', 'specialization', 'text', true], ['Qualification', 'qualification', 'text', true], ['Years of Experience', 'experience', 'number', true], ['Hospital / Clinic Name', 'clinicName', 'text', true], ['Hospital / Clinic Address', 'clinicAddress', 'textarea', true], ['Consultation Fee', 'fee', 'number', false], ['Available Days', 'availableDays', 'text', true], ['Available Time', 'availableTime', 'text', true], ['Languages', 'languages', 'text', false], ['About Doctor', 'about', 'textarea', false]],
     hospital: [['Hospital Name', 'hospitalName', 'text', true], ['Hospital Type', 'hospitalType', 'select:Government|Private|Trust/NGO', true], ['Registration Number', 'registrationNumber', 'text', true], ['Contact Person', 'contactPerson', 'text', true], ['Phone Number', 'mobile', 'tel', true], ['Email', 'email', 'email', true], ['Complete Address', 'address', 'textarea', true], ['City', 'city', 'text', true], ['State', 'state', 'text', true], ['PIN Code', 'pinCode', 'text', true], ['Emergency Services Available', 'emergency', 'select:Yes|No', true], ['Ambulance Available', 'ambulance', 'select:Yes|No', true], ['ICU Available', 'icu', 'select:Yes|No', true], ['Departments', 'departments', 'text', true], ['Available Facilities', 'facilities', 'text', false], ['Hospital Timings', 'timings', 'text', true], ['Website', 'website', 'url', false], ['Hospital Photos', 'photos', 'file', false]],
     'blood-bank': [['Blood Bank Name', 'bloodBankName', 'text', true], ['Registration / License Number', 'licenseNumber', 'text', true], ['Contact Person', 'contactPerson', 'text', true], ['Phone Number', 'mobile', 'tel', true], ['Email', 'email', 'email', true], ['Complete Address', 'address', 'textarea', true], ['City', 'city', 'text', true], ['State', 'state', 'text', true], ['PIN Code', 'pinCode', 'text', true], ['Operating Hours', 'hours', 'text', true], ['Available Blood Groups', 'bloodGroups', 'text', true], ['Blood Component Availability', 'components', 'text', false], ['Emergency Contact', 'emergencyContact', 'tel', true], ['License / Certificate', 'certificate', 'file', false]]
   };
@@ -374,14 +373,52 @@
     document.getElementById('signupMobile').addEventListener('input', (event) => { event.target.value = normalizePhone(event.target.value); });
   };
 
+  function highlightActiveNav() {
+    const getFileName = (path) => {
+      if (!path) return '';
+      const clean = path.split('?')[0].split('#')[0].replace(/\\/g, '/');
+      const parts = clean.split('/').filter(Boolean);
+      const last = (parts[parts.length - 1] || '').toLowerCase();
+      if (!last || last === 'frontend' || !last.includes('.html')) {
+        return 'index.html';
+      }
+      return last;
+    };
+
+    const current = getFileName(window.location.pathname);
+    const links = document.querySelectorAll('.desktop-nav .nav-link, .mobile-nav-links .mobile-nav-link');
+    if (!links.length) return;
+
+    let hasMatch = false;
+    links.forEach(link => {
+      const target = getFileName(link.getAttribute('href'));
+      if (target && target === current) {
+        link.classList.add('active');
+        hasMatch = true;
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    if (!hasMatch && current === 'live-status.html') {
+      links.forEach(link => {
+        if (getFileName(link.getAttribute('href')) === 'find-care.html') {
+          link.classList.add('active');
+        }
+      });
+    }
+  }
+
   mount();
   bind();
   
-  // Initialize navbar on load
+  // Initialize navbar and active page indicator on load
   updateAuthNavbar();
+  highlightActiveNav();
   
   // Expose global methods
   window.updateAuthNavbar = updateAuthNavbar;
+  window.highlightActiveNav = highlightActiveNav;
   window.getLoggedInUser = () => {
     const userStr = sessionStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
